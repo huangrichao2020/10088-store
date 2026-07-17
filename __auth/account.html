@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>登录 / 订阅 · pretty-skills 武器库</title>
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
+  <style>
+    .auth-book {
+      width: 100%;
+      background: var(--bg);
+    }
+    .auth-main {
+      width: 100%;
+      max-width: 100%;
+    }
+    .auth-wrap {
+      max-width: 920px;
+      margin: 60px auto 80px;
+      padding: 0 24px;
+    }
+    .auth-head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .auth-head .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 18px;
+    }
+    .auth-head .eyebrow .seal {
+      padding: 2px 8px;
+      border: 1px solid var(--stamp);
+      color: var(--stamp);
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-right: 12px;
+    }
+    .auth-head h1 {
+      font-family: var(--cn);
+      font-weight: 900;
+      font-size: 48px;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin: 0 0 14px;
+    }
+    .auth-head .sub {
+      font-family: var(--cn);
+      font-size: 15px;
+      color: var(--ink-soft);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .auth-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .auth-card {
+      background: var(--bg-2);
+      border: 1px solid var(--ink);
+      padding: 32px 28px;
+    }
+    .auth-card h2 {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .auth-card h2 .meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      color: var(--ink-faint);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .auth-form label {
+      font-family: var(--cn);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .auth-form input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--ink);
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--cn);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .12s;
+    }
+    .auth-form input:focus {
+      border-color: var(--accent);
+      border-width: 2px;
+      padding: 9px 11px;
+    }
+    .auth-form input::placeholder {
+      color: var(--ink-faint);
+    }
+    .auth-submit {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--ink);
+      color: var(--bg-2);
+      border: 1px solid var(--ink);
+      font-family: var(--cn);
+      font-weight: 700;
+      font-size: 15px;
+      cursor: not-allowed;
+      opacity: 0.5;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+    .auth-card .wip {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border: 1px solid var(--ink-faint);
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .auth-card .placeholder-note {
+      font-family: var(--cn);
+      font-size: 12.5px;
+      color: var(--ink-faint);
+      line-height: 1.6;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-left: 2px solid var(--stamp);
+      margin-top: 8px;
+    }
+    .auth-card .placeholder-note b {
+      color: var(--stamp);
+    }
+    .vip-summary {
+      background: var(--bg-2);
+      border: 1px solid var(--ink);
+      padding: 32px 28px;
+      margin-bottom: 32px;
+    }
+    .vip-summary h2 {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .vip-tier-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      margin-bottom: 16px;
+    }
+    .vip-tier {
+      background: var(--bg-2);
+      padding: 16px 14px 14px;
+    }
+    .vip-tier .t-eyebrow {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      font-weight: 600;
+    }
+    .vip-tier .t-name {
+      font-family: var(--cn);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+      margin-top: 4px;
+    }
+    .vip-tier .t-price {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--stamp);
+      margin-top: 8px;
+    }
+    .vip-tier .t-note {
+      font-family: var(--cn);
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+    .vip-tier.t1 { border-top: 3px solid var(--l1); }
+    .vip-tier.t2 { border-top: 3px solid var(--l2); }
+    .vip-tier.t3 { border-top: 3px solid var(--l3); }
+    .vip-tier.t4 { border-top: 3px solid var(--l4); }
+    .vip-tier.t5 { border-top: 3px solid var(--l5); }
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .payment-option {
+      padding: 16px;
+      border: 1px solid var(--ink);
+      background: var(--bg);
+      text-align: center;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .payment-option .po-name {
+      font-family: var(--cn);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .payment-option .po-status {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 1.5px;
+      color: var(--stamp);
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .auth-back {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .auth-back a {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--ink);
+    }
+    .auth-back a:hover {
+      background: var(--ink);
+      color: var(--bg-2);
+    }
+    @media (max-width: 720px) {
+      .auth-grid { grid-template-columns: 1fr; }
+      .vip-tier-list { grid-template-columns: 1fr; }
+      .payment-options { grid-template-columns: 1fr; }
+      .auth-head h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="strip">
+  <div class="left">
+    <a class="brand" href="home.html">pretty-skills<span class="kb">·武器库</span></a>
+    <span class="crumb"><b>登录 / 订阅</b></span>
+  </div>
+  <div class="right">
+    <span class="wip-badge" title="VIP 即将上线">🚧 VIP 即将上线</span>
+    <span class="live"><span class="dot"></span>更新 2026·07·17</span>
+    <a class="btn" href="home.html">← 返回首页</a>
+  </div>
+</div>
+
+<div class="auth-book">
+  <main class="auth-main">
+    <div class="auth-wrap">
+
+      <div class="auth-head">
+        <div class="eyebrow">
+          <span class="seal">登录 / 订阅</span>
+          <span>16 领域 · 87 case · VIP 解锁</span>
+        </div>
+        <h1>登录或订阅 VIP</h1>
+        <p class="sub">登录后可以同步你的偏好 · 收藏 case · 接收最新更新；订阅 VIP 解锁全部 87 case + 月度新增 + 优先支持。</p>
+      </div>
+
+      <div class="auth-grid">
+        <div class="auth-card">
+          <h2>邮箱登录 <span class="meta">已有账号</span></h2>
+          <form class="auth-form" onsubmit="return false;">
+            <div>
+              <label for="login-email">邮箱</label>
+              <input type="email" id="login-email" placeholder="you@example.com" disabled>
+            </div>
+            <div>
+              <label for="login-password">密码</label>
+              <input type="password" id="login-password" placeholder="••••••••" disabled>
+            </div>
+            <button type="submit" class="auth-submit" disabled>登录（开发中）</button>
+            <div class="placeholder-note">
+              <b>占位说明</b>　登录功能开发中 · 即将支持邮箱 + 微信扫码 · 暂未开放
+            </div>
+          </form>
+        </div>
+
+        <div class="auth-card">
+          <h2>邮箱注册 <span class="meta">新用户</span></h2>
+          <form class="auth-form" onsubmit="return false;">
+            <div>
+              <label for="reg-email">邮箱</label>
+              <input type="email" id="reg-email" placeholder="you@example.com" disabled>
+            </div>
+            <div>
+              <label for="reg-code">验证码</label>
+              <input type="text" id="reg-code" placeholder="6 位验证码" disabled>
+            </div>
+            <div>
+              <label for="reg-password">设置密码</label>
+              <input type="password" id="reg-password" placeholder="至少 8 位" disabled>
+            </div>
+            <button type="submit" class="auth-submit" disabled>注册（开发中）</button>
+            <div class="placeholder-note">
+              <b>占位说明</b>　注册功能开发中 · 暂未开放 · 开放后会发送邮件通知
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="vip-summary">
+        <h2>VIP 订阅预览 <span style="float:right; font-size: 10px; color: var(--ink-faint); letter-spacing: 1.5px;">价格开发中</span></h2>
+
+        <div class="vip-tier-list">
+          <div class="vip-tier t1">
+            <div class="t-eyebrow">第一档</div>
+            <div class="t-name">免费试用</div>
+            <div class="t-price">¥0/月</div>
+            <div class="t-note">看 30% case · 社区文档</div>
+          </div>
+          <div class="vip-tier t2">
+            <div class="t-eyebrow">第二档</div>
+            <div class="t-name">个人 VIP</div>
+            <div class="t-price">¥?/月</div>
+            <div class="t-note">87 case 全解锁 · 月度更新</div>
+          </div>
+          <div class="vip-tier t3">
+            <div class="t-eyebrow">第三档</div>
+            <div class="t-name">团队 VIP</div>
+            <div class="t-price">¥?/年</div>
+            <div class="t-note">5 账号 · 团队空间</div>
+          </div>
+          <div class="vip-tier t4">
+            <div class="t-eyebrow">第四档</div>
+            <div class="t-name">企业 VIP</div>
+            <div class="t-price">¥?/年</div>
+            <div class="t-note">私有部署 · SLA 99.9%</div>
+          </div>
+          <div class="vip-tier t5">
+            <div class="t-eyebrow">第五档</div>
+            <div class="t-name">定制咨询</div>
+            <div class="t-price">议价</div>
+            <div class="t-note">1v1 · 驻场实施</div>
+          </div>
+        </div>
+
+        <div style="font-family: var(--cn); font-size: 13px; color: var(--ink-soft); line-height: 1.7; padding: 12px 14px; background: var(--bg); border-left: 2px solid var(--stamp);">
+          <b style="color: var(--stamp);">订阅方法开发中</b>　计划支持：支付宝 / 微信支付 / Stripe 国际卡 · 按月 / 按年 / 终身 三档 · 月度发票 · 企业批量采购请联系订阅邮箱（开发中）
+        </div>
+
+        <div class="payment-options">
+          <div class="payment-option">
+            <div class="po-name">支付宝</div>
+            <div class="po-status">开发中</div>
+          </div>
+          <div class="payment-option">
+            <div class="po-name">微信支付</div>
+            <div class="po-status">开发中</div>
+          </div>
+          <div class="payment-option">
+            <div class="po-name">Stripe</div>
+            <div class="po-status">开发中</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-back">
+        <a href="home.html">← 返回武器库首页</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer class="colophon">
+<div><b>pretty-skills<span class="kb">·武器库</span></b> · 公开档案 · <span class="wip-foot">🚧 VIP 即将上线</span></div><div>更新日期 · 2026·07·17</div><div><a href="home.html">→ 首页</a>&nbsp;·&nbsp;<a href="#vip">→ VIP 订阅</a>&nbsp;·&nbsp;<a href="https://github.com/huangrichao2020/pretty-skills">→ GitHub 仓库</a></div><div class="disclaimer"><b>免责声明</b>　本站为 AI 技能武器库，按 pretty-skills 收口硬规则沉淀；VIP 订阅按使用量计费，价格开发中；case 内容仅供参考，不构成具体投资 / 创作 / 情感建议；agent 实战调用需用户自行审核；第三方 skill 版权归原作者，本仓库按 MIT 协议公开。订阅方法开发中 · 即将上线。<br><br><b>设计灵感</b>　本站布局借鉴自 <a href="https://aichainmap.com" target="_blank" rel="noopener" style="color:inherit;">AI 产业链地图·知识库</a>（MIT 协议），由 Mavis 改造为 pretty-skills 武器库销售页。</div>
+</footer>
+
+</body>
+</html>
