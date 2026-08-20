@@ -3,7 +3,7 @@
 > 从 pretty-sm 武器库销售页 → **idea-store 机会挖掘** 全自动 A 股决策平台
 > 接入 idea-to-trade 方法论 · 5 板块 + 四季地图 · 每日 AI 定时跑
 
-**线上访问**：https://ai10088.com/idea-store/（v0.1 即将上线 · 2026-08-20）
+**线上访问**：https://www.ai10088.com/idea-store/（v0.1 已上线 · 2026-08-20）
 
 ---
 
