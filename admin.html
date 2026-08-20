@@ -343,7 +343,10 @@ async function renderContentList() {
     const list = await IdeaAuth.api('/admin/content/list?limit=100');
     main.innerHTML = `
       <h2>📝 内容管理（${list.length}）</h2>
-      <button class="btn primary" onclick="openCreate()" style="margin-bottom:1rem">+ 新建内容</button>
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
+        <button class="btn primary" onclick="openCreate()">+ 新建内容</button>
+        <button class="btn" onclick="openBulk()">📥 批量导入 JSON</button>
+      </div>
       <table class="tbl">
         <thead><tr>
           <th>ID</th><th>Slug</th><th>标题</th><th>分类</th><th>发布时间</th>
@@ -455,7 +458,81 @@ function openCreate() {
   document.getElementById('modal-bg').classList.add('open');
 }
 
+function openBulk() {
+  document.getElementById('modal-bg').classList.add('open');
+  document.getElementById('edit-form').style.display = 'none';
+  document.getElementById('modal-title').textContent = '批量导入 JSON 数组';
+  // 用单独模态框（动态创建）
+  const existing = document.getElementById('bulk-modal-body');
+  if (existing) existing.remove();
+  const modal = document.querySelector('.modal');
+  const body = document.createElement('div');
+  body.id = 'bulk-modal-body';
+  body.innerHTML = `
+    <p style="color:#666;font-size:0.85rem">粘贴 JSON 数组（每项字段同单条 create）。例如：</p>
+    <pre style="background:#f5f5f5;padding:0.7rem;border-radius:4px;font-size:0.75rem;color:#555">[
+  {
+    "slug": "lp-2026-08-21",
+    "title": "8-21 低位机会",
+    "category": "low-position-opportunities",
+    "publish_date": "2026-08-21T07:30:00",
+    "summary": "明日",
+    "need_pay": false,
+    "pay_level": 0,
+    "source": "manual"
+  }
+]</pre>
+    <textarea id="bulk-text" style="min-height:240px;font-family:'IBM Plex Mono',monospace;font-size:0.85rem"></textarea>
+    <div id="bulk-msg" class="msg"></div>
+    <div class="modal-actions">
+      <button type="button" onclick="closeModal()">取消</button>
+      <button type="button" class="primary" onclick="submitBulk()">提交导入</button>
+    </div>
+  `;
+  modal.appendChild(body);
+}
+
+async function submitBulk() {
+  const msg = document.getElementById('bulk-msg');
+  msg.className = 'msg';
+  msg.textContent = '解析中…';
+  const text = document.getElementById('bulk-text').value.trim();
+  let items;
+  try {
+    items = JSON.parse(text);
+    if (!Array.isArray(items)) throw new Error('JSON 不是数组');
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ JSON 解析失败: ' + e.message;
+    return;
+  }
+  try {
+    const result = await IdeaAuth.api('/admin/content/bulk', { method: 'POST', body: items });
+    let txt = `✅ 创建 ${result.created} 条，跳过 ${result.skipped} 条`;
+    if (result.failed.length > 0) {
+      txt += `，失败 ${result.failed.length} 条`;
+      msg.className = 'msg err';
+    } else {
+      msg.className = 'msg ok';
+    }
+    msg.textContent = txt;
+    if (result.failed.length > 0) {
+      msg.innerHTML = txt + '<br><pre style="font-size:0.7rem;color:#c0392b">' +
+        JSON.stringify(result.failed, null, 2).slice(0, 500) + '</pre>';
+    }
+    setTimeout(() => { closeModal(); renderContentList(); }, 1500);
+  } catch (err) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ ' + err.message;
+  }
+}
+
 function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+  document.getElementById('edit-form').style.display = '';
+  const bulk = document.getElementById('bulk-modal-body');
+  if (bulk) bulk.remove();
+}
   document.getElementById('modal-bg').classList.remove('open');
 }
 
@@ -530,6 +607,15 @@ async function grantVip(userId, username) {
 
 load();
 </script>
+
+
+<footer class="site-foot">
+  <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备2026021420号-1</a>
+  <span class="sep">·</span>
+  <span>© 2026 idea-store · 机会挖掘</span>
+  <span class="sep">·</span>
+  <span>A 股智能决策平台</span>
+</footer>
 
 </body>
 </html>

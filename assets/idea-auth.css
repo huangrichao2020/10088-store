@@ -329,3 +329,21 @@
 }
 
 .tier-card .btn.primary:hover { background: #a93226; }
+
+/* === Site Footer (备案号) === */
+.site-foot {
+  max-width: 1400px;
+  margin: 4rem auto 2rem;
+  padding: 1.5rem 2rem 1rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #888;
+  border-top: 1px solid #eee;
+}
+.site-foot a {
+  color: #888;
+  text-decoration: none;
+  margin: 0 0.4rem;
+}
+.site-foot a:hover { color: #c0392b; }
+.site-foot .sep { color: #ccc; }
