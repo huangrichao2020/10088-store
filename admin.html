@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · idea-store</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
+<link rel="stylesheet" href="assets/idea-store.css?v=001">
+<link rel="stylesheet" href="assets/idea-auth.css?v=001">
+<style>
+.admin-grid {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+}
+.admin-side {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+}
+.admin-side h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-family: "Noto Serif SC", serif;
+  color: #c0392b;
+}
+.admin-side button {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.admin-side button:hover {
+  border-color: #c0392b;
+  background: #fef5f4;
+}
+.admin-side button.active {
+  border-color: #c0392b;
+  background: #fef5f4;
+  font-weight: 700;
+}
+.admin-main {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.admin-main h2 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  font-family: "Noto Serif SC", serif;
+  border-bottom: 2px solid #c0392b;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.tbl th, .tbl td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+.tbl th {
+  background: #fafafa;
+  font-weight: 700;
+  color: #555;
+}
+.tbl tr:hover td { background: #fcfcfc; }
+.tbl .actions button {
+  padding: 0.3rem 0.7rem;
+  margin-right: 0.3rem;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.tbl .actions button.del { color: #c0392b; }
+.tbl .actions button:hover { background: #f5f5f5; }
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.badge.admin { background: #c0392b; color: #fff; }
+.badge.vip { background: #d4a017; color: #fff; }
+.badge.user { background: #eee; color: #666; }
+.badge.lock { background: #fee; color: #c0392b; }
+.badge.free { background: #efe; color: #2a7; }
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 1rem;
+}
+.stat-card .label { color: #888; font-size: 0.85rem; }
+.stat-card .value { font-size: 1.8rem; font-weight: 800; color: #c0392b; font-family: "IBM Plex Mono", monospace; margin-top: 0.3rem; }
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: none; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h3 {
+  margin: 0 0 1rem;
+  font-family: "Noto Serif SC", serif;
+  color: #c0392b;
+}
+.modal label {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.modal input, .modal textarea, .modal select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-top: 0.3rem;
+}
+.modal textarea { min-height: 100px; }
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+.modal-actions button {
+  padding: 0.7rem 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.modal-actions button.primary {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+}
+.msg {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.msg.ok { background: #efe; color: #2a7; }
+.msg.err { background: #fee; color: #c0392b; }
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <div class="left">
+    <a class="brand" href="/">idea-store<span class="kb">·机会挖掘</span></a>
+    <span class="crumb"><b>Admin 后台</b></span>
+  </div>
+  <div class="right">
+    <span id="idea-auth-status"></span>
+    <a class="btn" href="/">← 返回首页</a>
+  </div>
+</div>
+
+<div class="admin-grid">
+  <aside class="admin-side">
+    <h3>📊 Admin Panel</h3>
+    <button class="active" data-tab="stats">📊 统计</button>
+    <button data-tab="content">📝 内容管理</button>
+    <button data-tab="users">👥 用户管理</button>
+    <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+    <div style="font-size: 0.75rem; color: #999;">
+      <div>路径：<code>/admin.html</code></div>
+      <div style="margin-top:0.3rem">权限：<span class="badge admin">admin</span></div>
+    </div>
+  </aside>
+
+  <main class="admin-main" id="main">
+    <p>加载中…</p>
+  </main>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">编辑内容</h3>
+    <form id="edit-form">
+      <input type="hidden" id="edit-id">
+      <label>Slug <small>(英文数字横线，创建后不可改)</small></label>
+      <input type="text" id="edit-slug" required pattern="[a-zA-Z0-9_-]+">
+
+      <label>标题</label>
+      <input type="text" id="edit-title" required>
+
+      <label>分类 (category)</label>
+      <input type="text" id="edit-category" required placeholder="low-position-opportunities">
+
+      <label>发布时间</label>
+      <input type="datetime-local" id="edit-publish-date" required>
+
+      <label>摘要</label>
+      <textarea id="edit-summary"></textarea>
+
+      <label>Body (JSON / Markdown)</label>
+      <textarea id="edit-body" style="min-height:150px"></textarea>
+
+      <label><input type="checkbox" id="edit-need-pay" style="width:auto;margin-right:0.5rem">需要付费</label>
+      <label>付费等级 (0-5)</label>
+      <input type="number" id="edit-pay-level" min="0" max="5" value="0">
+
+      <label>数据源</label>
+      <input type="text" id="edit-source" placeholder="manual / neodata">
+
+      <div id="edit-msg" class="msg"></div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="closeModal()">取消</button>
+        <button type="submit" class="primary">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script defer src="assets/idea-auth.js?v=001"></script>
+<script>
+async function load() {
+  const token = IdeaAuth.getToken();
+  if (!token) { location.href = '/login.html'; return; }
+
+  // 检查 admin 权限
+  try {
+    const me = await IdeaAuth.me();
+    if (me.role !== 'admin') {
+      document.getElementById('main').innerHTML = `
+        <h2>无权限</h2>
+        <p>当前用户 <b>${IdeaAuth.escapeHtml(me.username)}</b> 的角色是 <span class="badge ${me.role}">${me.role}</span></p>
+        <p>需要 admin 权限才能访问后台。</p>
+        <p>请联系现有管理员把你的 role 改为 admin，或用 SQL: <code>UPDATE users SET role='admin' WHERE username='your_username'</code></p>
+      `;
+      return;
+    }
+  } catch (e) {
+    IdeaAuth.clearToken();
+    location.href = '/login.html';
+    return;
+  }
+
+  // 绑定 tab
+  document.querySelectorAll('.admin-side button[data-tab]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.admin-side button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      const tab = b.dataset.tab;
+      if (tab === 'stats') renderStats();
+      else if (tab === 'content') renderContentList();
+      else if (tab === 'users') renderUserList();
+    });
+  });
+
+  // 默认显示 stats
+  renderStats();
+}
+
+async function renderStats() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<p>加载中…</p>';
+  try {
+    const stats = await IdeaAuth.api('/admin/stats');
+    main.innerHTML = `
+      <h2>📊 系统统计</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="label">总用户</div>
+          <div class="value">${stats.users.total}</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">VIP 用户</div>
+          <div class="value">${stats.users.vip}</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">付费订单数</div>
+          <div class="value">${stats.orders.paid}</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">总营收</div>
+          <div class="value">¥${stats.orders.revenue_yuan.toFixed(2)}</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">内容板块</div>
+          <div class="value">${stats.content.total}</div>
+        </div>
+      </div>
+      <p style="color:#999;font-size:0.85rem">实时数据 · ${new Date().toLocaleString('zh-CN')}</p>
+    `;
+  } catch (e) {
+    main.innerHTML = `<p class="msg err">加载失败: ${e.message}</p>`;
+  }
+}
+
+async function renderContentList() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<p>加载中…</p>';
+  try {
+    const list = await IdeaAuth.api('/admin/content/list?limit=100');
+    main.innerHTML = `
+      <h2>📝 内容管理（${list.length}）</h2>
+      <button class="btn primary" onclick="openCreate()" style="margin-bottom:1rem">+ 新建内容</button>
+      <table class="tbl">
+        <thead><tr>
+          <th>ID</th><th>Slug</th><th>标题</th><th>分类</th><th>发布时间</th>
+          <th>付费</th><th>等级</th><th>操作</th>
+        </tr></thead>
+        <tbody>
+          ${list.map(c => `
+            <tr>
+              <td>${c.id}</td>
+              <td><code>${IdeaAuth.escapeHtml(c.slug)}</code></td>
+              <td>${IdeaAuth.escapeHtml(c.title)}</td>
+              <td>${IdeaAuth.escapeHtml(c.category)}</td>
+              <td>${c.publish_date.slice(0, 10)}</td>
+              <td>${c.need_pay ? '<span class="badge lock">🔒 付费</span>' : '<span class="badge free">免费</span>'}</td>
+              <td>${c.pay_level}</td>
+              <td class="actions">
+                <button onclick='openEdit(${JSON.stringify(c)})'>编辑</button>
+                <button class="del" onclick="del(${c.id}, '${IdeaAuth.escapeHtml(c.title)}')">删除</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <p style="color:#999;font-size:0.85rem;margin-top:1rem">
+        显示已存在的板块内容（不包含逻辑删）。付费墙控制：need_pay=true 的内容对非 VIP 隐藏 body。
+      </p>
+    `;
+  } catch (e) {
+    main.innerHTML = `<p class="msg err">加载失败: ${e.message}</p>`;
+  }
+}
+
+async function renderUserList() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<p>加载中…</p>';
+  try {
+    const users = await IdeaAuth.api('/admin/users');
+    main.innerHTML = `
+      <h2>👥 用户管理（${users.length}）</h2>
+      <table class="tbl">
+        <thead><tr>
+          <th>ID</th><th>用户名</th><th>邮箱</th><th>角色</th><th>VIP</th><th>VIP 到期</th><th>状态</th><th>注册时间</th><th>操作</th>
+        </tr></thead>
+        <tbody>
+          ${users.map(u => `
+            <tr>
+              <td>${u.id}</td>
+              <td>${IdeaAuth.escapeHtml(u.username)}</td>
+              <td>${IdeaAuth.escapeHtml(u.email || '-')}</td>
+              <td><span class="badge ${u.role}">${u.role}</span></td>
+              <td>${u.is_vip ? '✅' : '❌'}</td>
+              <td>${u.vip_expires_at ? u.vip_expires_at.slice(0,10) : '-'}</td>
+              <td>${u.status}</td>
+              <td>${u.created_at.slice(0,10)}</td>
+              <td class="actions">
+                <button onclick='promoteAdmin(${u.id}, "${IdeaAuth.escapeHtml(u.username)}")'>改 admin</button>
+                <button onclick='grantVip(${u.id}, "${IdeaAuth.escapeHtml(u.username)}")'>开通 VIP</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  } catch (e) {
+    main.innerHTML = `<p class="msg err">加载失败: ${e.message}</p>`;
+  }
+}
+
+// === Edit / Create Modal ===
+async function openEdit(c) {
+  document.getElementById('modal-title').textContent = `编辑 #${c.id} ${c.slug}`;
+  document.getElementById('edit-id').value = c.id;
+  document.getElementById('edit-slug').value = c.slug;
+  document.getElementById('edit-slug').disabled = true;
+  document.getElementById('edit-title').value = c.title;
+  document.getElementById('edit-category').value = c.category;
+  document.getElementById('edit-publish-date').value = c.publish_date.slice(0, 16);
+  document.getElementById('edit-summary').value = c.summary || '';
+  // body 通过 detail 接口拉
+  try {
+    const detail = await IdeaAuth.api(`/admin/content/${c.id}`);
+    document.getElementById('edit-body').value = detail.body || '';
+  } catch (e) {
+    document.getElementById('edit-body').value = '';
+  }
+  document.getElementById('edit-need-pay').checked = c.need_pay;
+  document.getElementById('edit-pay-level').value = c.pay_level;
+  document.getElementById('edit-source').value = c.source || 'manual';
+  document.getElementById('edit-msg').textContent = '';
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function openCreate() {
+  document.getElementById('modal-title').textContent = '新建内容';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('edit-slug').value = '';
+  document.getElementById('edit-slug').disabled = false;
+  document.getElementById('edit-title').value = '';
+  document.getElementById('edit-category').value = 'low-position-opportunities';
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  document.getElementById('edit-publish-date').value = now.toISOString().slice(0, 16);
+  document.getElementById('edit-summary').value = '';
+  document.getElementById('edit-body').value = '';
+  document.getElementById('edit-need-pay').checked = false;
+  document.getElementById('edit-pay-level').value = 0;
+  document.getElementById('edit-source').value = 'manual';
+  document.getElementById('edit-msg').textContent = '';
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+document.getElementById('edit-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('edit-msg');
+  msg.className = 'msg';
+  msg.textContent = '保存中…';
+
+  const editId = document.getElementById('edit-id').value;
+  const data = {
+    title: document.getElementById('edit-title').value,
+    category: document.getElementById('edit-category').value,
+    publish_date: new Date(document.getElementById('edit-publish-date').value).toISOString(),
+    summary: document.getElementById('edit-summary').value || null,
+    body: document.getElementById('edit-body').value || null,
+    need_pay: document.getElementById('edit-need-pay').checked,
+    pay_level: parseInt(document.getElementById('edit-pay-level').value),
+    source: document.getElementById('edit-source').value || null,
+  };
+
+  try {
+    if (editId) {
+      // 更新（PATCH /admin/content/{id}）
+      await IdeaAuth.api(`/admin/content/${editId}`, { method: 'PUT', body: data });
+      msg.className = 'msg ok';
+      msg.textContent = '✅ 更新成功';
+      setTimeout(() => { closeModal(); renderContentList(); }, 800);
+    } else {
+      const create = { ...data, slug: document.getElementById('edit-slug').value };
+      await IdeaAuth.api('/admin/content/create', { method: 'POST', body: create });
+      msg.className = 'msg ok';
+      msg.textContent = '✅ 创建成功';
+      setTimeout(() => { closeModal(); renderContentList(); }, 800);
+    }
+  } catch (err) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ ' + err.message;
+  }
+});
+
+async function del(id, title) {
+  if (!confirm(`确认逻辑删除「${title}」(#${id})？\n\n将设置 deleted_at，前端不可见，但数据库可恢复。`)) return;
+  try {
+    await IdeaAuth.api(`/admin/content/${id}`, { method: 'DELETE' });
+    alert('✅ 已删除');
+    renderContentList();
+  } catch (err) {
+    alert('❌ ' + err.message);
+  }
+}
+
+async function promoteAdmin(userId, username) {
+  if (!confirm(`把 ${username} 设为 admin？`)) return;
+  try {
+    await IdeaAuth.api(`/admin/users/${userId}`, { method: 'PUT', body: { role: 'admin' } });
+    alert('✅ 已设为 admin');
+    renderUserList();
+  } catch (e) { alert('❌ ' + e.message); }
+}
+
+async function grantVip(userId, username) {
+  const days = prompt(`给 ${username} 开通 VIP 多少天？`, '365');
+  if (!days) return;
+  const expires = new Date(Date.now() + parseInt(days) * 86400000).toISOString();
+  try {
+    await IdeaAuth.api(`/admin/users/${userId}`, { method: 'PUT', body: { is_vip: true, vip_expires_at: expires } });
+    alert(`✅ 已开通 ${days} 天 VIP`);
+    renderUserList();
+  } catch (e) { alert('❌ ' + e.message); }
+}
+
+load();
+</script>
+
+</body>
+</html>
