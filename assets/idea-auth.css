@@ -347,3 +347,391 @@
 }
 .site-foot a:hover { color: #c0392b; }
 .site-foot .sep { color: #ccc; }
+
+/* === Top Nav (index.html) === */
+.top-nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: 2rem;
+  font-size: 0.92rem;
+}
+.top-nav a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.top-nav a:hover {
+  color: #c0392b;
+  border-bottom-color: #c0392b;
+}
+
+/* === Stat Bar（6 个密度统计） === */
+.statbar {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border-bottom: 1px solid #e6e6e6;
+  background: #fafafa;
+}
+.stat-pill {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-right: 1px solid #e6e6e6;
+}
+.stat-pill:last-child { border-right: 0; }
+.stat-pill .num {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: "IBM Plex Mono", monospace;
+  color: #1a7f37;
+  line-height: 1;
+}
+.stat-pill .label {
+  display: block;
+  font-size: 0.82rem;
+  color: #888;
+  margin-top: 0.4rem;
+}
+.stat-pill.price .num { color: #c0392b; }
+@media (max-width: 768px) {
+  .statbar { grid-template-columns: repeat(3, 1fr); }
+  .stat-pill:nth-child(3) { border-right: 0; }
+}
+
+/* === Hero Grid === */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+}
+.hero-kicker {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  background: #fef5f4;
+  border: 1px solid #fadcd8;
+  border-radius: 4px;
+  color: #c0392b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-family: "Noto Serif SC", serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  color: #1a1a1a;
+}
+.hero-title .hero-sub {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #c0392b;
+  font-family: "Noto Sans SC", sans-serif;
+}
+.hero-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #555;
+  margin: 1rem 0 1.5rem;
+}
+.hero-desc strong { color: #c0392b; }
+.hero-buttons {
+  display: flex;
+  gap: 0.8rem;
+  margin: 1.5rem 0 1rem;
+}
+.hero-buttons .btn.primary {
+  padding: 0.9rem 1.6rem;
+  background: #c0392b;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.hero-buttons .btn.primary:hover { background: #a93226; }
+.hero-buttons .btn.ghost {
+  padding: 0.9rem 1.6rem;
+  background: #fff;
+  color: #1a1a1a;
+  border: 1px solid #ddd;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.hero-buttons .btn.ghost:hover { border-color: #c0392b; color: #c0392b; }
+.hero-foot {
+  font-size: 0.8rem;
+  color: #999;
+  margin: 0;
+}
+.hero-right {
+  border-left: 1px solid #e6e6e6;
+  padding-left: 2rem;
+}
+.hero-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.hero-stat {
+  background: #fafafa;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+.hero-stat .num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: "IBM Plex Mono", monospace;
+  color: #1a7f37;
+  line-height: 1;
+}
+.hero-stat .label {
+  display: block;
+  font-size: 0.82rem;
+  color: #888;
+  margin-top: 0.4rem;
+}
+.hero-stat.price .num { color: #c0392b; }
+
+/* === Board Grid (5 大板块 2x3) === */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 1024px) { .board-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .board-grid { grid-template-columns: 1fr; } }
+.board-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.2rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.board-card:hover {
+  border-color: #c0392b;
+  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.08);
+  transform: translateY(-2px);
+}
+.board-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.board-emoji { font-size: 1.4rem; }
+.board-card-head strong { color: #c0392b; }
+.vip-tag {
+  margin-left: auto;
+  background: #d4a017;
+  color: #fff;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.board-card-desc {
+  color: #555;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0.4rem 0 0.7rem;
+}
+.board-card-tags {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  color: #777;
+}
+.board-card-tags li {
+  padding: 0.15rem 0 0.15rem 1rem;
+  position: relative;
+}
+.board-card-tags li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #c0392b;
+  font-weight: 700;
+}
+.board-card-foot {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+  border-top: 1px solid #f0f0f0;
+  font-size: 0.78rem;
+  color: #999;
+}
+.board-card-foot .arrow {
+  color: #c0392b;
+  font-weight: 700;
+}
+
+/* === Scenario Grid (9 类) === */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+}
+@media (max-width: 768px) { .scenario-grid { grid-template-columns: 1fr; } }
+.scenario-card {
+  display: flex;
+  gap: 0.8rem;
+  align-items: start;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+.scenario-card:hover {
+  border-color: #c0392b;
+  background: #fef5f4;
+}
+.scenario-num {
+  flex: 0 0 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "IBM Plex Mono", monospace;
+}
+.scenario-card strong {
+  font-size: 1rem;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.scenario-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* === VIP Grid === */
+.vip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 1024px) { .vip-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .vip-grid { grid-template-columns: 1fr; } }
+.vip-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+.vip-card.popular {
+  border-color: #c0392b;
+  border-width: 2px;
+  background: #fef5f4;
+  transform: scale(1.04);
+}
+.popular-tag {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #c0392b;
+  color: #fff;
+  padding: 0.2rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vip-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.vip-price {
+  font-size: 2.4rem;
+  font-weight: 800;
+  font-family: "IBM Plex Mono", monospace;
+  color: #c0392b;
+  margin: 0.5rem 0 1.5rem;
+  line-height: 1;
+}
+.vip-price span {
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 400;
+  margin-left: 0.3rem;
+}
+.vip-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  text-align: left;
+}
+.vip-card li {
+  padding: 0.4rem 0 0.4rem 1.2rem;
+  font-size: 0.85rem;
+  color: #555;
+  position: relative;
+}
+.vip-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #c0392b;
+  font-weight: 700;
+}
+.vip-card .btn {
+  display: block;
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #1a1a1a;
+}
+.vip-card .btn:hover { border-color: #c0392b; color: #c0392b; }
+.vip-card .btn.primary {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+}
+.vip-card .btn.primary:hover { background: #a93226; }
+.vip-foot {
+  text-align: center;
+  margin: 2rem 0 0;
+  color: #888;
+  font-size: 0.88rem;
+}
+
+/* === sect-more (右侧链接) === */
+.sect-more {
+  font-size: 0.88rem;
+  color: #c0392b;
+  text-decoration: none;
+  font-weight: 600;
+}
+.sect-more:hover { text-decoration: underline; }

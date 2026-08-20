@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>idea-store · 机会挖掘 · A股智能决策</title>
+<title>机会挖掘 · idea-store · A股智能决策平台</title>
+<meta name="description" content="基于 idea-to-trade 方法论的 A 股智能决策平台：左侧挖掘 6 路径 + 接盘防御 5 铁律 + 鱼身定位 5 信号，5 大板块每日 AI 自动更新。">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x">
+<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,188 +14,312 @@
 <link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
 <link rel="stylesheet" href="assets/idea-store.css?v=001">
 <link rel="stylesheet" href="assets/idea-auth.css?v=001">
-<script defer src="assets/idea-store.js?v=001"></script>
-<script defer src="assets/idea-auth.js?v=001"></script>
 </head>
 <body>
 
 <!-- ════════ Top Strip ════════ -->
 <div class="strip">
   <div class="left">
-    <a class="brand" href="/idea-store/">idea-store<span class="kb">·机会挖掘</span></a>
-    <span class="crumb"><b>首页</b></span>
+    <a class="brand" href="/">idea-store<span class="kb">·机会挖掘</span></a>
   </div>
+  <nav class="top-nav">
+    <a href="#hero">首页</a>
+    <a href="#boards">5 大板块</a>
+    <a href="#scenarios">9 类场景</a>
+    <a href="#vip">VIP 价格</a>
+    <a href="/account.html">机会挖掘 Skill</a>
+    <a href="https://github.com/huangrichao2020/idea-to-trade" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
   <div class="right">
     <span class="live"><span class="dot"></span><span id="last-update">加载中…</span></span>
     <span id="idea-auth-status"></span>
-    <a class="btn" href="https://github.com/huangrichao2020/idea-to-trade" target="_blank" rel="noopener">→ idea-to-trade</a>
   </div>
 </div>
 
-<div class="book">
-
-  <!-- ════════ Sidebar (spine) ════════ -->
-  <aside class="spine">
-    <div class="spine-head">
-      <a href="/idea-store/" class="spine-logo">
-        <span class="name">idea-store<span class="kb">·机会挖掘</span></span>
-        <span class="vol">AI 每日定时</span>
-      </a>
-    </div>
-
-    <div class="spine-section">
-      <div class="spine-section-label">核心能力</</div>
-      <a class="spine-link active" href="#hero"><span class="label">首页</span></a>
-      <a class="spine-link" href="#low-position"><span class="label">🎯 低位机会分析</span></a>
-      <a class="spine-link" href="#us-megastar"><span class="label">🌙 美股→大 A</span></a>
-      <a class="spine-link" href="#daily-review"><span class="label">📊 今日复盘</span></a>
-      <a class="spine-link" href="#premarket"><span class="label">🌅 盘前机会</span></a>
-      <a class="spine-link" href="#forecast"><span class="label">🔮 明日预测</span></a>
-      <a class="spine-link" href="#season-map"><span class="label">🗺️ 四季地图</span></a>
-    </div>
-
-    <div class="spine-section">
-      <div class="spine-section-label">数据源</div>
-      <a class="spine-link" href="https://github.com/huangrichao2020/idea-to-trade/tree/main/methodology" target="_blank" rel="noopener"><span class="label">14 个方法论</span></a>
-      <a class="spine-link" href="https://github.com/huangrichao2020/idea-to-trade/tree/main/skill/idea-trade-qa" target="_blank" rel="noopener"><span class="label">Skill: 机会挖掘</span></a>
-    </div>
-
-    <div class="spine-foot">
-      <span class="spine-fineprint">每日 07:00/07:30/15:30 自动跑</span>
-    </div>
-  </aside>
-
-  <!-- ════════ Main Content ════════ -->
-  <main class="leaf">
-
-    <!-- Hero -->
-    <section class="sect hero-sect" id="hero">
-      <div class="hero-grid">
-        <div class="hero-left">
-          <span class="hero-kicker">A 股智能决策平台</span>
-          <h1 class="hero-title">
-            机会挖掘<br>
-            <span class="hero-sub">从左侧挖掘 · 接盘防御 · 鱼身定位</span>
-          </h1>
-          <p class="hero-desc">
-            基于 idea-to-trade 方法论 + 每日 AI 定时任务。<br>
-            5 大板块 + 1 个交易地图，全自动每日更新。<br>
-            <span class="hero-data">数据源：NeoData · westockdata · akshare · WebSearch</span>
-          </p>
-        </div>
-        <div class="hero-right">
-          <div class="hero-stat">
-            <span class="num">6</span>
-            <span class="label">核心板块</span>
-          </div>
-          <div class="hero-stat">
-            <span class="num">9</span>
-            <span class="label">场景模板</span>
-          </div>
-          <div class="hero-stat">
-            <span class="num">14</span>
-            <span class="label">方法论</span>
-          </div>
-          <div class="hero-stat">
-            <span class="num">30+</span>
-            <span class="label">每日 AI 调用</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 1：低位机会逻辑分析 ════════ -->
-    <section class="sect" id="low-position">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">壹</span>
-          <h2 class="sect-title">🎯 低位机会逻辑分析</h2>
-          <span class="sect-sub">基于 methodology/13 左侧挖掘 6 路径 + methodology/15 小市值×SMC</span>
-        </div>
-        <span class="sect-tag" id="low-position-tag">加载中…</span>
-      </div>
-      <div class="low-position-grid" id="low-position-content">
-        <div class="loading">⏳ 加载今日低位机会…</div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 2：美股最明星板块对今日大 A 的机会 ════════ -->
-    <section class="sect" id="us-megastar">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">贰</span>
-          <h2 class="sect-title">🌙 昨日美股最明星板块对今日大 A 的机会</h2>
-          <span class="sect-sub">美股涨幅 TOP → A 股映射标的 → 联动逻辑 + 风险点</span>
-        </div>
-        <span class="sect-tag" id="us-megastar-tag">加载中…</span>
-      </div>
-      <div class="sector-grid" id="us-megastar-content">
-        <div class="loading">⏳ 加载美股明星板块…</div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 3：大 A 今日复盘 ════════ -->
-    <section class="sect" id="daily-review">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">参</span>
-          <h2 class="sect-title">📊 大 A 今日复盘</h2>
-          <span class="sect-sub">指数 + 市场广度 + 资金流 + 涨停梯队 + 情绪周期</span>
-        </div>
-        <span class="sect-tag" id="daily-review-tag">加载中…</span>
-      </div>
-      <div class="review-content" id="daily-review-content">
-        <div class="loading">⏳ 加载今日复盘…</div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 4：大 A 盘前机会 ════════ -->
-    <section class="sect" id="premarket">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">肆</span>
-          <h2 class="sect-title">🌅 大 A 盘前机会</h2>
-          <span class="sect-sub">每日 07:00 更新 · 隔夜美股映射 + 今日竞价观察</span>
-        </div>
-        <span class="sect-tag" id="premarket-tag">加载中…</span>
-      </div>
-      <div class="premarket-content" id="premarket-content">
-        <div class="loading">⏳ 加载盘前机会…</div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 5：大 A 明日预测 ════════ -->
-    <section class="sect" id="forecast">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">伍</span>
-          <h2 class="sect-title">🔮 大 A 明日预测</h2>
-          <span class="sect-sub">每日 15:30 盘后更新 · 方向 + 概率 + 关键变量 + 操作策略</span>
-        </div>
-        <span class="sect-tag" id="forecast-tag">加载中…</span>
-      </div>
-      <div class="forecast-content" id="forecast-content">
-        <div class="loading">⏳ 加载明日预测…</div>
-      </div>
-    </section>
-
-    <!-- ════════ 板块 6：四季交易地图 ════════ -->
-    <section class="sect" id="season-map">
-      <div class="sect-head">
-        <div class="left">
-          <span class="sect-num">陆</span>
-          <h2 class="sect-title">🗺️ 四季交易地图</h2>
-          <span class="sect-sub">春升·夏涨·夏末·秋伐·冬藏 · 全年 12 月节奏</span>
-        </div>
-        <span class="sect-tag" id="season-map-tag">加载中…</span>
-      </div>
-      <div class="season-map-content" id="season-map-content">
-        <div class="loading">⏳ 加载四季地图…</div>
-      </div>
-    </section>
-
-  </main>
+<!-- ════════ Stat Bar（密度 6 个统计） ════════ -->
+<div class="statbar" id="statbar">
+  <div class="stat-pill"><span class="num" id="stat-boards">5</span><span class="label">核心板块</span></div>
+  <div class="stat-pill"><span class="num" id="stat-scenarios">9</span><span class="label">场景模板</span></div>
+  <div class="stat-pill"><span class="num" id="stat-methods">14</span><span class="label">方法论</span></div>
+  <div class="stat-pill"><span class="num" id="stat-cron">5</span><span class="label">每日定时任务</span></div>
+  <div class="stat-pill"><span class="num">12+</span><span class="label">友商平台对接</span></div>
+  <div class="stat-pill price"><span class="num">¥30</span><span class="label">VIP 起/月</span></div>
 </div>
+
+<!-- ════════ Hero ════════ -->
+<section class="sect hero-sect" id="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <span class="hero-kicker">A 股智能决策平台</span>
+      <h1 class="hero-title">
+        机会挖掘<br>
+        <span class="hero-sub">即学即用的智能决策</span>
+      </h1>
+      <p class="hero-desc">
+        基于 idea-to-trade 方法论的 <strong>A 股智能决策平台</strong>。
+        左侧挖掘 <strong>6 路径</strong> · 接盘防御 <strong>5 铁律</strong> · 鱼身定位 <strong>5 信号</strong>。
+        <strong>5 大板块</strong> + <strong>1 个交易地图</strong>，每日 AI 自动跑。
+      </p>
+      <div class="hero-buttons">
+        <a class="btn primary" href="#vip">查看 VIP 价格</a>
+        <a class="btn ghost" href="#boards">浏览 5 大板块</a>
+      </div>
+      <p class="hero-foot">无需信用卡 · 1 分钟开通 · 7 天无理由退订</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-grid">
+        <div class="hero-stat"><span class="num">5</span><span class="label">核心板块</span></div>
+        <div class="hero-stat"><span class="num">9</span><span class="label">场景模板</span></div>
+        <div class="hero-stat"><span class="num">14</span><span class="label">方法论</span></div>
+        <div class="hero-stat"><span class="num">5</span><span class="label">定时任务</span></div>
+        <div class="hero-stat"><span class="num">12+</span><span class="label">数据源</span></div>
+        <div class="hero-stat price"><span class="num">¥30</span><span class="label">VIP 起/月</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 5 大板块（核心内容展示） ════════ -->
+<section class="sect" id="boards">
+  <div class="sect-head">
+    <div class="left">
+      <span class="sect-num">壹</span>
+      <h2 class="sect-title">先选你最常用的板块</h2>
+      <span class="sect-sub">5 大板块 · 数据查询可读 · 每天 7:00 / 15:30 自动生成</span>
+    </div>
+    <a class="sect-more" href="#boards">浏览全部 5 板块 ↓</a>
+  </div>
+
+  <div class="board-grid">
+    <a class="board-card b-low-position" href="/boards/low-position.html">
+      <div class="board-card-head">
+        <span class="board-emoji">🎯</span>
+        <strong>低位机会逻辑分析</strong>
+      </div>
+      <p class="board-card-desc">基于 methodology/13 左侧挖掘 6 路径 + methodology/15 小市值×SMC 双过滤，3-5 支候选标的 + 入场价位 + 出场纪律。</p>
+      <ul class="board-card-tags">
+        <li>横截面选股（5 支）</li>
+        <li>SMC 4 信号过滤</li>
+        <li>月份 + 季度判断</li>
+        <li>入场价位 + 仓位 + 出场</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每日 07:30 · 自动生成</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="board-card b-us-megastar" href="/boards/us-megastar.html">
+      <div class="board-card-head">
+        <span class="board-emoji">🌙</span>
+        <strong>美股明星映射</strong>
+      </div>
+      <p class="board-card-desc">昨夜美股明星板块 + 龙头股 → 今日大 A 联动机会 + 影响判断。每日 07:35 美股收盘后自动生成。</p>
+      <ul class="board-card-tags">
+        <li>昨夜美股板块涨跌</li>
+        <li>龙头股映射</li>
+        <li>A 股对应板块</li>
+        <li>外溢风险判断</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每日 07:35 · 美股收盘后</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="board-card b-premarket" href="/boards/premarket.html">
+      <div class="board-card-head">
+        <span class="board-emoji">🌅</span>
+        <strong>盘前机会</strong>
+      </div>
+      <p class="board-card-desc">美股映射 + 今日要闻 + 竞价观察 9:15-9:25。9:30 开盘前 5 分钟决定今天干不干。</p>
+      <ul class="board-card-tags">
+        <li>美股映射延续</li>
+        <li>要闻速读</li>
+        <li>竞价异动</li>
+        <li>开盘 5 分钟决策</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每日 07:00 · 开盘前</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="board-card b-daily-review" href="/boards/daily-review.html">
+      <div class="board-card-head">
+        <span class="board-emoji">📊</span>
+        <strong>今日复盘</strong>
+      </div>
+      <p class="board-card-desc">15:30 收盘后 AI 自动跑：大盘指数 + 市场广度 + 资金流 + 涨停梯队 + 情绪周期。明天开盘前的复盘底料。</p>
+      <ul class="board-card-tags">
+        <li>大盘指数</li>
+        <li>涨跌停梯队</li>
+        <li>主力资金 TOP3</li>
+        <li>情绪周期判断</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每日 15:30 · 收盘后</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="board-card b-forecast" href="/boards/forecast.html">
+      <div class="board-card-head">
+        <span class="board-emoji">🔮</span>
+        <strong>明日预测</strong>
+      </div>
+      <p class="board-card-desc">基于今日复盘 + 多因子预测 + 历史相似走势，明日高低位 + 板块轮动预判。配合盘前机会一起看，决策更准。</p>
+      <ul class="board-card-tags">
+        <li>多因子预测</li>
+        <li>板块轮动预判</li>
+        <li>高低位预警</li>
+        <li>关键节点</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每日 15:35 · 收盘后</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a class="board-card b-season-map" href="/boards/season-map.html">
+      <div class="board-card-head board-card-extra">
+        <span class="board-emoji">🗺️</span>
+        <strong>四季交易地图</strong>
+        <span class="vip-tag">VIP</span>
+      </div>
+      <p class="board-card-desc">2026 年 12 月节奏 + 季节性判断（春耕/夏长/秋收/冬藏）+ 历史相似年走势回测。月初 1 号更新。</p>
+      <ul class="board-card-tags">
+        <li>12 月节奏</li>
+        <li>4 季节判断</li>
+        <li>历史相似回测</li>
+        <li>关键节点</li>
+      </ul>
+      <div class="board-card-foot">
+        <span>每月 1 号 04:00</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════ 9 类场景 ════════ -->
+<section class="sect" id="scenarios">
+  <div class="sect-head">
+    <div class="left">
+      <span class="sect-num">贰</span>
+      <h2 class="sect-title">9 类场景 · 微信 1-2 屏输出</h2>
+      <span class="sect-sub">每个场景 4 段式输出 · 数据驱动 · 高准确率</span>
+    </div>
+    <a class="sect-more" href="https://github.com/huangrichao2020/idea-to-trade" target="_blank" rel="noopener">全部 9 场景 →</a>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card"><span class="scenario-num">1</span><div><strong>追涨决策</strong><p>5 部可交付：盘前 9:30 / 盘中异动 / 板块龙头 / 复盘决策</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">2</span><div><strong>次日推演</strong><p>基于今日复盘推明日高低位 + 板块轮动</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">3</span><div><strong>盘中机会</strong><p>9:30-15:00 实时扫描，5 分钟一个异动信号</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">4</span><div><strong>多日推演</strong><p>周线/月线节奏判断 + 关键节点</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">5</span><div><strong>全球联动</strong><p>昨夜美股 → 今日大 A 映射 + 影响</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">6</span><div><strong>持仓解套</strong><p>套了要不要割肉？主力还在吗？</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">7</span><div><strong>公告驱动</strong><p>突发利好/利空 → 板块联动</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">8</span><div><strong>财报埋伏</strong><p>财报季前埋伏 + 业绩超预期</p></div></div>
+    <div class="scenario-card"><span class="scenario-num">9</span><div><strong>小市值选股</strong><p>中小综指 399101 月度调仓 + SMC 双过滤</p></div></div>
+  </div>
+</section>
+
+<!-- ════════ VIP 价格 ════════ -->
+<section class="sect" id="vip">
+  <div class="sect-head">
+    <div class="left">
+      <span class="sect-num">叁</span>
+      <h2 class="sect-title">选个档位，今天就能用</h2>
+      <span class="sect-sub">一次性买断 · VIP 会员送 idea-trade-qa Skill 高级版</span>
+    </div>
+  </div>
+
+  <div class="vip-grid">
+    <div class="vip-card">
+      <h3>免费试用</h3>
+      <p class="vip-price">¥0<span>/永久</span></p>
+      <ul>
+        <li>2 天前历史板块</li>
+        <li>5 大板块只读摘要</li>
+        <li>9 场景基础模板</li>
+        <li>无 idea-trade-qa Skill key</li>
+      </ul>
+      <a class="btn" href="/register.html">立即注册</a>
+    </div>
+
+    <div class="vip-card popular">
+      <span class="popular-tag">🔥 最受欢迎</span>
+      <h3>个人 VIP</h3>
+      <p class="vip-price">¥29<span>/月</span></p>
+      <ul>
+        <li>全部板块含今日</li>
+        <li>9 场景完整输出</li>
+        <li>idea-trade-qa Skill 高级版</li>
+        <li>VIP 实战课解锁</li>
+        <li>优先新功能体验</li>
+        <li>微信群答疑</li>
+      </ul>
+      <a class="btn primary" href="/account.html">立即订阅</a>
+    </div>
+
+    <div class="vip-card">
+      <h3>企业 VIP</h3>
+      <p class="vip-price">¥1,999<span>/年</span></p>
+      <ul>
+        <li>个人 VIP 全部权益</li>
+        <li>API 接口对接</li>
+        <li>专属客服</li>
+        <li>定制板块接入</li>
+        <li>SLA 保障</li>
+        <li>私有部署支持</li>
+      </ul>
+      <a class="btn" href="mailto:hi@idea-store.com">联系商务</a>
+    </div>
+
+    <div class="vip-card">
+      <h3>定制咨询</h3>
+      <p class="vip-price">¥议价</p>
+      <ul>
+        <li>策略定制开发</li>
+        <li>团队培训</li>
+        <li>源码合作</li>
+        <li>联合发行</li>
+        <li>白标方案</li>
+        <li>数据合作</li>
+      </ul>
+      <a class="btn" href="mailto:hi@idea-store.com">联系咨询</a>
+    </div>
+  </div>
+
+  <p class="vip-foot">年卡 199 元 = 买 1 年送 1 年 · 实际 730 天 VIP</p>
+</section>
+
+<script defer src="assets/idea-auth.js?v=001"></script>
+<script>
+// 加载统计 + 数据更新时间（轻量 · 不阻塞渲染）
+(async function() {
+  try {
+    const r = await fetch('/data/latest.json');
+    if (r.ok) {
+      const d = await r.json();
+      const lu = document.getElementById('last-update');
+      if (lu && d.更新日期) {
+        lu.textContent = `${d.更新日期} · ${d.更新时间 || ''} 更新`;
+      }
+    }
+  } catch (e) { /* 静默失败 · 不影响首屏 */ }
+})();
+</script>
+
+<footer class="site-foot">
+  <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备2026021420号-1</a>
+  <span class="sep">·</span>
+  <span>© 2026 idea-store · 机会挖掘</span>
+  <span class="sep">·</span>
+  <span>A 股智能决策平台</span>
+</footer>
 
 </body>
 </html>
