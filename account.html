@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>会员中心 · idea-store · 机会挖掘</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
+<link rel="stylesheet" href="assets/idea-store.css?v=001">
+<link rel="stylesheet" href="assets/idea-auth.css?v=001">
+<script defer src="assets/idea-auth.js?v=001"></script>
+</head>
+<body>
+
+<!-- ════════ Top Strip ════════ -->
+<div class="strip">
+  <div class="left">
+    <a class="brand" href="/">idea-store<span class="kb">·机会挖掘</span></a>
+    <span class="crumb"><b>会员中心</b></span>
+  </div>
+  <div class="right">
+    <span id="idea-auth-status"></span>
+    <a class="btn" href="/">← 返回首页</a>
+  </div>
+</div>
+
+<div class="acct-wrap">
+  <section class="acct-card">
+    <h2>账号信息</h2>
+    <div id="profile-box" class="profile-box"><p>加载中…</p></div>
+  </section>
+
+  <section class="acct-card">
+    <h2>会员状态</h2>
+    <div id="member-box"><p>加载中…</p></div>
+    <div id="tiers-box" class="tiers-renew"><h3>续费 / 升级</h3></div>
+  </section>
+
+  <section class="acct-card">
+    <h2>使用 idea-trade-qa Skill</h2>
+    <ol class="howto">
+      <li>复制下面的 License Key</li>
+      <li>在终端运行：<code>python3 ~/.workbuddy/skills/idea-trade-qa/idea_trade_qa.py --query "你的问题" --key "&lt;key&gt;"</code></li>
+      <li>Key 有效期内的所有会员内容（含付费课）自动可访问</li>
+    </ol>
+    <div id="keys-box" class="keys-box"></div>
+  </section>
+</div>
+
+<script>
+async function load() {
+  const token = IdeaAuth.getToken();
+  if (!token) { location.href = '/login.html'; return; }
+
+  try {
+    const [me, m, tiers] = await Promise.all([
+      IdeaAuth.me(),
+      IdeaAuth.myMembership(),
+      IdeaAuth.tiers(),
+    ]);
+
+    // 1. 账号信息
+    document.getElementById('profile-box').innerHTML = `
+      <div class="kv"><span>用户名</span><b>${IdeaAuth.escapeHtml(me.username)}</b></div>
+      <div class="kv"><span>邮箱</span><b>${IdeaAuth.escapeHtml(me.email || '未设置')}</b></div>
+      <div class="kv"><span>昵称</span><b>${IdeaAuth.escapeHtml(me.nickname || me.username)}</b></div>
+      <div class="kv"><span>注册时间</span><b>${new Date(me.created_at).toLocaleString('zh-CN')}</b></div>
+      <div class="kv"><span>VIP</span><b>${me.is_vip ? '✅ 是' : '❌ 否'}</b></div>
+      ${me.vip_expires_at ? `<div class="kv"><span>VIP 到期</span><b>${new Date(me.vip_expires_at).toLocaleString('zh-CN')}</b></div>` : ''}
+    `;
+
+    // 2. 会员状态
+    const memberBox = document.getElementById('member-box');
+    if (m.is_vip) {
+      memberBox.innerHTML = `
+        <div class="kv"><span>当前状态</span><b class="hi">VIP 会员</b></div>
+        <div class="kv"><span>到期时间</span><b>${new Date(m.expires_at).toLocaleString('zh-CN')}</b></div>
+        <div class="kv"><span>激活的 Key</span><b>${m.active_keys.length} 个</b></div>
+      `;
+    } else {
+      memberBox.innerHTML = `
+        <div class="kv"><span>当前状态</span><b>免费用户</b></div>
+        <p class="hint">免费用户只能看 2 天前的内容。订阅 VIP 解锁全部。</p>
+      `;
+    }
+
+    // 3. License Keys
+    const keysBox = document.getElementById('keys-box');
+    if (m.active_keys.length > 0) {
+      keysBox.innerHTML = m.active_keys.map(k => `
+        <div class="key-row">
+          <span class="key-tier">${IdeaAuth.escapeHtml(k.tier_name)} · ${k.is_active ? '✅' : '❌'} ${new Date(k.expires_at).toLocaleDateString('zh-CN')} 到期</span>
+          <code class="key-val">${IdeaAuth.escapeHtml(k.license_key)}</code>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('${k.license_key}').then(()=>this.textContent='已复制 ✓')">复制</button>
+        </div>
+      `).join('');
+    } else {
+      keysBox.innerHTML = '<p class="hint">订阅会员后会获得 License Key。</p>';
+    }
+
+    // 4. 续费选项
+    document.getElementById('tiers-box').innerHTML = tiers.map(t => `
+      <div class="tier-card">
+        <div class="tier-head">
+          <strong>${IdeaAuth.escapeHtml(t.name)}</strong>
+          <span class="price">¥${(t.price_cents / 100).toFixed(2)} <small>/ ${t.duration_days >= 365 ? Math.round(t.duration_days / 365 * 10) / 10 + ' 年' : t.duration_days + ' 天'}</small></span>
+        </div>
+        <p class="tier-desc">${IdeaAuth.escapeHtml(t.description || '')}</p>
+        <ul>${t.features.map(f => `<li>${IdeaAuth.escapeHtml(f)}</li>`).join('')}</ul>
+        <button class="btn primary" onclick="renew(${t.id}, '${IdeaAuth.escapeHtml(t.name)}', ${t.price_cents})">立即订阅</button>
+      </div>
+    `).join('');
+  } catch (e) {
+    if (e.message.includes('401') || e.message.includes('token')) {
+      IdeaAuth.clearToken();
+      location.href = '/login.html';
+    } else {
+      document.body.innerHTML += `<pre style="color:red">加载失败: ${e.message}</pre>`;
+    }
+  }
+}
+
+async function renew(tierId, tierName, amountCents) {
+  if (!confirm(`确认订阅 ${tierName}（¥${(amountCents/100).toFixed(2)}）？\n\n支付页面将打开（mock 模式：点击"完成"会自动开通）。`)) return;
+  try {
+    const order = await IdeaAuth.createOrder(tierId);
+    // mock 模式：直接调 mock-pay
+    const paid = await IdeaAuth.api(`/payments/mock-pay/${order.order_no}`, { method: 'POST' });
+    alert(`✅ 订阅成功！\n\nLicense Key: ${paid.license_key}\n到期时间: ${new Date(paid.expires_at).toLocaleString('zh-CN')}`);
+    location.reload();
+  } catch (e) {
+    alert('❌ 订阅失败: ' + e.message);
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>

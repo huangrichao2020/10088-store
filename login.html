@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 · idea-store · 机会挖掘</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
+<link rel="stylesheet" href="assets/idea-store.css?v=001">
+<link rel="stylesheet" href="assets/idea-auth.css?v=001">
+<script defer src="assets/idea-auth.js?v=001"></script>
+</head>
+<body>
+
+<!-- ════════ Top Strip ════════ -->
+<div class="strip">
+  <div class="left">
+    <a class="brand" href="/">idea-store<span class="kb">·机会挖掘</span></a>
+    <span class="crumb"><b>登录</b></span>
+  </div>
+  <div class="right">
+    <span id="idea-auth-status"></span>
+    <a class="btn" href="/">← 返回首页</a>
+  </div>
+</div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>欢迎回到 idea-store</h1>
+    <p class="lead">订阅会员 → 解锁 idea-trade-qa Skill + 全部板块历史数据 + 实战课</p>
+
+    <!-- Tab 切换 -->
+    <div class="tabs">
+      <button class="tab active" data-tab="login">登录</button>
+      <button class="tab" data-tab="register">注册</button>
+    </div>
+
+    <!-- 登录 -->
+    <form id="login-form" class="auth-form active">
+      <label>账号 <small>(用户名 / 邮箱 / 手机号)</small></label>
+      <input type="text" name="account" required autocomplete="username" placeholder="testuser1">
+
+      <label>密码</label>
+      <input type="password" name="password" required minlength="6" autocomplete="current-password" placeholder="至少 6 位">
+
+      <button class="btn primary" type="submit">登录</button>
+      <div class="msg"></div>
+    </form>
+
+    <!-- 注册 -->
+    <form id="register-form" class="auth-form">
+      <label>用户名 <small>(3-32 字母数字下划线)</small></label>
+      <input type="text" name="username" required pattern="[a-zA-Z0-9_-]{3,32}" placeholder="futuretrader">
+
+      <label>邮箱 <small>(可选)</small></label>
+      <input type="email" name="email" placeholder="hi@example.com">
+
+      <label>昵称 <small>(可选)</small></label>
+      <input type="text" name="nickname" maxlength="64" placeholder="昵称">
+
+      <label>密码 <small>(至少 6 位)</small></label>
+      <input type="password" name="password" required minlength="6" autocomplete="new-password">
+
+      <button class="btn primary" type="submit">注册并登录</button>
+      <div class="msg"></div>
+    </form>
+
+    <div class="auth-foot">
+      <small>注册即表示同意 <a href="#">服务条款</a> 和 <a href="#">隐私政策</a></small>
+    </div>
+  </div>
+
+  <!-- 右侧：会员档位 -->
+  <aside class="auth-side">
+    <h3>订阅方案</h3>
+    <div id="tiers-box" class="tiers-box"><p>加载中…</p></div>
+  </aside>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab + '-form').classList.add('active');
+  });
+});
+
+async function loadTiers() {
+  try {
+    const tiers = await IdeaAuth.tiers();
+    const box = document.getElementById('tiers-box');
+    box.innerHTML = tiers.map(t => `
+      <div class="tier">
+        <div class="tier-head">
+          <strong>${IdeaAuth.escapeHtml(t.name)}</strong>
+          <span class="price">¥${(t.price_cents / 100).toFixed(2)}</span>
+        </div>
+        <div class="tier-desc">${IdeaAuth.escapeHtml(t.description || '')}</div>
+        <ul>${t.features.map(f => `<li>${IdeaAuth.escapeHtml(f)}</li>`).join('')}</ul>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('tiers-box').innerHTML = `<p>加载失败: ${e.message}</p>`;
+  }
+}
+loadTiers();
+
+function bindForm(formId, handler) {
+  const form = document.getElementById(formId);
+  const msg = form.querySelector('.msg');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = 'msg';
+    msg.textContent = '处理中…';
+    const fd = new FormData(form);
+    const payload = Object.fromEntries(fd.entries());
+    try {
+      await handler(payload);
+      location.href = '/account.html';
+    } catch (err) {
+      msg.className = 'msg err';
+      msg.textContent = '❌ ' + err.message;
+    }
+  });
+}
+
+bindForm('login-form', (p) => IdeaAuth.login({ account: p.account, password: p.password }));
+bindForm('register-form', (p) => IdeaAuth.register({
+  username: p.username,
+  email: p.email || null,
+  nickname: p.nickname || null,
+  password: p.password,
+}));
+</script>
+
+</body>
+</html>
