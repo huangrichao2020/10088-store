@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>板块详情 · idea-store</title>
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/shared.css?v=c436cc33a8">
+<link rel="stylesheet" href="../assets/idea-store.css?v=001">
+<link rel="stylesheet" href="../assets/idea-auth.css?v=001">
+<style>
+.board-main {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+}
+@media (max-width: 900px) { .board-main { grid-template-columns: 1fr; } }
+.board-article {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 2rem;
+}
+.board-article h1 {
+  font-family: "Noto Serif SC", serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 0 0 0.5rem;
+  color: #1a1a1a;
+}
+.board-meta {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #eee;
+}
+.board-raw {
+  background: #fafafa;
+  border-left: 3px solid #c0392b;
+  padding: 1.2rem 1.5rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  font-family: "Noto Sans SC", sans-serif;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+.board-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.board-side .card {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+.board-side h3 {
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+  color: #c0392b;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.4rem;
+}
+.board-side .kv {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px dashed #f5f5f5;
+}
+.board-side .kv span { color: #888; }
+.board-side .kv b { color: #1a1a1a; font-family: "IBM Plex Mono", monospace; }
+.board-side .data-src {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82rem;
+  color: #555;
+}
+.board-side .data-src li {
+  padding: 0.3rem 0 0.3rem 1.2rem;
+  position: relative;
+  line-height: 1.4;
+}
+.board-side .data-src li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c0392b;
+  font-weight: 700;
+}
+.board-nav {
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+.board-nav a {
+  display: inline-block;
+  margin: 0.3rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #555;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.board-nav a:hover { border-color: #c0392b; color: #c0392b; }
+.board-nav a.active {
+  border-color: #c0392b;
+  background: #fef5f4;
+  color: #c0392b;
+  font-weight: 700;
+}
+.board-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
+}
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <div class="left">
+    <a class="brand" href="../">idea-store<span class="kb">·机会挖掘</span></a>
+  </div>
+  <div class="right">
+    <span id="idea-auth-status"></span>
+    <a class="btn" href="../">← 返回首页</a>
+  </div>
+</div>
+
+<div class="board-main">
+  <article class="board-article" id="article">
+    <h1 id="board-title">加载中…</h1>
+    <div class="board-meta" id="board-meta">⏳ 加载板块数据…</div>
+    <div class="board-loading" id="loading">⏳ 加载板块 JSON…</div>
+    <div id="board-raw"></div>
+  </article>
+
+  <aside class="board-side">
+    <div class="card">
+      <h3>📊 板块元数据</h3>
+      <div id="meta-card">加载中…</div>
+    </div>
+    <div class="card">
+      <h3>📚 数据源</h3>
+      <ul class="data-src" id="data-src">
+        <li>加载中…</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🔗 其他板块</h3>
+      <div id="board-nav-list"></div>
+    </div>
+  </aside>
+</div>
+
+<nav class="board-nav" id="board-nav">
+  <a href="?cat=low-position-opportunities">🎯 低位机会</a>
+  <a href="?cat=us-megastar-a-impact">🌙 美股映射</a>
+  <a href="?cat=a-share-premarket">🌅 盘前机会</a>
+  <a href="?cat=a-share-daily-review">📊 今日复盘</a>
+  <a href="?cat=a-share-forecast">🔮 明日预测</a>
+  <a href="?cat=season-map">🗺️ 四季地图</a>
+</nav>
+
+<script defer src="../assets/idea-auth.js?v=001"></script>
+<script>
+const BOARD_META = {
+  "low-position-opportunities": { emoji: "🎯", title: "低位机会逻辑分析", cron: "每日 07:30" },
+  "us-megastar-a-impact": { emoji: "🌙", title: "美股明星映射", cron: "每日 07:35（美股收盘后）" },
+  "a-share-premarket": { emoji: "🌅", title: "盘前机会", cron: "每日 07:00" },
+  "a-share-daily-review": { emoji: "📊", title: "今日复盘", cron: "每日 15:30（收盘后）" },
+  "a-share-forecast": { emoji: "🔮", title: "明日预测", cron: "每日 15:35（收盘后）" },
+  "season-map": { emoji: "🗺️", title: "四季交易地图", cron: "每月 1 号 04:00" },
+};
+
+// 从 URL 参数取 cat
+const params = new URLSearchParams(location.search);
+const cat = params.get('cat') || 'low-position-opportunities';
+
+async function load() {
+  // 顶部切换 nav active
+  document.querySelectorAll('#board-nav a').forEach(a => {
+    if (a.href.includes(`cat=${cat}`)) a.classList.add('active');
+  });
+
+  const meta = BOARD_META[cat] || { emoji: '📌', title: cat, cron: '未知' };
+  document.getElementById('board-title').textContent = `${meta.emoji} ${meta.title}`;
+  document.title = `${meta.title} · idea-store`;
+
+  // 板块 nav 列表（右侧卡片）
+  const navList = document.getElementById('board-nav-list');
+  navList.innerHTML = Object.entries(BOARD_META).map(([k, v]) =>
+    `<a href="?cat=${k}" class="${k === cat ? 'active' : ''}" style="display:block;padding:0.4rem 0;color:${k===cat?'#c0392b':'#555'};text-decoration:none;font-size:0.85rem">${v.emoji} ${v.title}</a>`
+  ).join('');
+
+  try {
+    const r = await fetch(`/data/${cat}/latest.json`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+
+    // meta
+    document.getElementById('board-meta').innerHTML = `
+      <strong>${d.板块 || meta.title}</strong> · 更新日期 ${d.更新日期 || '?'} ${d.更新时间 || ''} · cron ${meta.cron}
+    `;
+
+    // 主体内容（idea_trade_qa_raw）
+    const raw = d.idea_trade_qa_raw || '(暂无 idea-trade-qa 输出)';
+    document.getElementById('board-raw').innerHTML = `<pre class="board-raw">${escapeHtml(raw)}</pre>`;
+
+    // 右侧元数据卡片
+    document.getElementById('meta-card').innerHTML = `
+      <div class="kv"><span>板块</span><b>${escapeHtml(d.板块 || '?')}</b></div>
+      <div class="kv"><span>更新</span><b>${escapeHtml(d.更新日期 || '?')} ${escapeHtml(d.更新时间 || '')}</b></div>
+      <div class="kv"><span>下次</span><b>${escapeHtml(d.next_run || meta.cron)}</b></div>
+      <div class="kv"><span>Schema</span><b>${escapeHtml(d.schema_version || '?')}</b></div>
+    `;
+
+    // 数据源列表
+    const dataSrc = Array.isArray(d.数据源) ? d.数据源 : [d.数据源].filter(Boolean);
+    document.getElementById('data-src').innerHTML = dataSrc.length
+      ? dataSrc.map(s => `<li>${escapeHtml(s)}</li>`).join('')
+      : '<li>—</li>';
+
+    // 加载完成
+    document.getElementById('loading').remove();
+  } catch (e) {
+    document.getElementById('loading').innerHTML = `
+      ❌ 加载失败：${escapeHtml(e.message)}
+      <br><br>板块 JSON 还没生成（cron 在 ${meta.cron} 跑），或文件不存在。
+      <br>请稍后再试或访问 <a href="../">首页</a>。
+    `;
+  }
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+load();
+</script>
+
+<footer class="site-foot">
+  <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">浙ICP备2026021420号-1</a>
+  <span class="sep">·</span>
+  <span>© 2026 idea-store · 机会挖掘</span>
+  <span class="sep">·</span>
+  <span>A 股智能决策平台</span>
+</footer>
+
+</body>
+</html>
