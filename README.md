@@ -1,206 +1,146 @@
-# 10088-store · pretty-skills 武器库销售页
+# 10088-store · idea-store · A 股智能决策平台
 
-> 一个 AI 技能武器库 —— 16 领域 / 87 case / 4 大场景入口 / VIP 5 档订阅
+> 从 pretty-sm 武器库销售页 → **idea-store 机会挖掘** 全自动 A 股决策平台
+> 接入 idea-to-trade 方法论 · 5 板块 + 四季地图 · 每日 AI 定时跑
 
-**做完后你能直接**：
+**线上访问**：https://ai10088.com/idea-store/（v0.1 即将上线 · 2026-08-20）
 
-- 📊 看一个完整 AI 技能武器库长什么样（87 case 分布 + 4 大场景）
-- 💰 把"订阅式 AI 技能服务"卖出去（VIP 5 档 + 支付宝 A2A 接好即用）
-- 🎯 微调所有文案 / 价格 / case 描述（你正在 vscode 里看的就是这个项目）
-- 🚀 一行命令部署到 aliyun，访问 `https://ai10088.com/10088-store/`
+---
 
-**线上访问**：[https://ai10088.com/10088-store/](https://ai10088.com/10088-store/)（v0.1 已上线，2026-07-17）
+## 项目定位
+
+**展示 idea-to-trade 项目能力** · **不再卖 pretty-sm 武器库订阅**
+
+前端是「**商品化展示**」：把 idea-to-trade 的方法论 + Skill 落地成 5 个板块 + 1 个交易地图，每天服务器自动跑 AI 任务 → 输出结构化 JSON → 前端精美展示。
+
+---
+
+## 6 大板块（每日定时 AI 跑）
+
+| # | 板块 | 触发时间 | 数据来源 | 输出格式 |
+|---|------|---------|---------|---------|
+| 1 | **🎯 低位机会逻辑分析** | 07:30 | methodology/13 左侧挖掘 6 路径 + methodology/15 小市值×SMC | `low-position-opportunities/{date}.json` |
+| 2 | **🌙 昨日美股最明星板块对今日大 A** | 07:35 | 美股数据 + 板块映射 | `us-megastar-a-impact/{date}.json` |
+| 3 | **📊 大 A 今日复盘** | 15:30 | NeoData 大盘/广度/资金流/涨停梯队 | `a-share-daily-review/{date}.json` |
+| 4 | **🌅 大 A 盘前机会** | 07:00 | 美股映射 + 今日要闻 + 竞价观察 | `a-share-premarket/{date}.json` |
+| 5 | **🔮 大 A 明日预测** | 15:35 | 当日数据 + 多因子预测 | `a-share-forecast/{date}.json` |
+| 6 | **🗺️ 四季交易地图** | 月初 04:00 | 全年 12 月节奏 + 季节判断 | `season-map/{year}.json` |
 
 ---
 
 ## 项目结构
 
 ```
-10088-store/
-├── index.html              # 主页（58KB · 12 section）
+10088-store/                          ← 本仓库（前端 + 脚本）
+├── index.html                        # 主页（5 板块 + 四季地图）
 ├── __auth/
-│   └── account.html        # 订阅页（14KB · VIP 5 档 + 3 支付方式占位）
+│   └── account.html                   # 保留（旧版订阅页 · 暂不删）
 ├── assets/
-│   ├── shared.css          # 复用自 aichainmap（MIT）
-│   ├── main.js             # 复用自 aichainmap
-│   ├── logo-ps.svg         # 自制 PS logo（498B）
-│   ├── logo-mark.png       # 备用 logo
-│   ├── favicon.ico         # 浏览器图标
-│   ├── favicon-32.png      # 浏览器图标
-│   ├── apple-touch-icon.png
-│   └── auth-chrome.js      # 订阅页交互
-├── README.md               # 本文件
-├── LICENSE                 # MIT
-└── .gitignore
+│   ├── shared.css                     # 复用自 aichainmap（MIT）
+│   ├── idea-store.css                 # ★ v0.1 idea-store 专属样式
+│   ├── idea-store.js                  # ★ v0.1 前端拉 JSON + 渲染
+│   ├── main.js                        # 旧版（保留）
+│   ├── auth-chrome.js                 # 旧版（保留）
+│   ├── logo-ps.svg
+│   ├── logo-mark.png
+│   └── favicon-*.png
+├── data/                              # ★ v0.1 数据 schema 定义
+│   └── schemas.py                     # 6 个板块的 JSON 结构定义
+├── scripts/                           # ★ v0.1 AI 定时任务
+│   ├── idea_daily_cron.py             # 核心脚本（6 个板块）
+│   ├── aliyun_setup_cron.sh           # aliyun 部署脚本（含 nginx + crontab）
+│   ├── aliyun_paths.sh
+│   └── fetch_data_aliyun.py
+├── README.md
+└license
 ```
 
-**总大小**：~100KB（不含 preview 截图）
-**技术栈**：纯静态 HTML + CSS + JS · 无 build · 无依赖 · 任何静态服务器可跑
+**数据输出目录**（aliyun 服务器）：
+
+```
+/root/workbuddy-data/idea-store/
+├── low-position-opportunities/{YYYY-MM-DD}.json
+├── us-megastar-a-impact/{YYYY-MM-DD}.json
+├── a-share-daily-review/{YYYY-MM-DD}.json
+├── a-share-premarket/{YYYY-MM-DD}.json
+├── a-share-forecast/{YYYY-MM-DD}.json
+├── season-map/{YYYY}.json
+└── latest.json  (索引文件)
+```
+
+---
+
+## 技术栈
+
+| 层 | 技术 | 用途 |
+|----|------|------|
+| **前端** | 纯静态 HTML + CSS + JS | 无 build · 无依赖 · 任何静态服务器可跑 |
+| **样式** | 复用 aichainmap（MIT）+ idea-store 自定义 | 日光模式 + 中国 A 股涨跌色（涨红跌绿）|
+| **后端 AI** | idea-trade-qa Skill CLI + aliyun cron | 每日自动跑 6 个板块任务 |
+| **数据源** | NeoData · westockdata · akshare · WebSearch | 实时 A 股 + 美股 + 港股 |
+| **部署** | nginx + crontab | aliyun 服务器 · https://ai10088.com/idea-store/ |
 
 ---
 
 ## 本地预览
 
 ```bash
-# 方式 1：直接打开
-open index.html  # macOS 自动用默认浏览器打开
-
-# 方式 2：起本地服务（推荐，避免某些浏览器 file:// 限制）
+cd ~/Desktop/10088-store
 python3 -m http.server 8000
 # 访问 http://localhost:8000/
 
-# 方式 3：用 vscode Live Server 插件
-# 右键 index.html → "Open with Live Server"
+# 数据需要从 aliyun 拉取（本地没有 /root/workbuddy-data/）
 ```
 
-**vscode 打开**（你已经装好）：
+---
+
+## aliyun 部署
 
 ```bash
-code ~/Desktop/10088-store/
+# 一键部署（含 rsync + nginx + crontab）
+bash scripts/aliyun_setup_cron.sh
+
+# 手动跑一次（测试）
+ssh aliyun "cd /root/idea-to-trade && python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py all"
 ```
 
-**推荐 vscode 扩展**：
+**crontab 自动跑**（每日 5 个时间点 + 月初）：
 
-- `Live Server` — 边改边看效果（自动刷新浏览器）
-- `Prettier` — 格式化 HTML/CSS/JS
-- `Auto Rename Tag` — 改 HTML 标签自动改闭合
-- `HTML CSS Support` — 写 class 时自动补全 shared.css 里的样式
+```
+# 07:00  盘前机会
+0 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py premarket
 
----
+# 07:30  低位机会 + 美股映射
+30 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py low-position
+35 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py us-megastar
 
-## 4 大核心场景（改文案位置）
+# 15:30  今日复盘 + 明日预测
+30 15 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py daily-review
+35 15 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py forecast
 
-| 场景 | 改什么 | 在 HTML 哪 |
-|---|---|---|
-| **做 PPT · 真实 .pptx** | 副标 + case 列表 | `index.html` line ~270（"7 大场景 · 4 大入口"区） |
-| **做股票 · 四层融合** | 副标 + 5 维框架 | 同上 |
-| **做情感 · 关系教练** | 副标 + 5 维信号 | 同上 |
-| **做自媒体 · 9 模板** | 副标 + 平台清单 | 同上 |
-
----
-
-## 16 领域索引（改 case 数量/描述）
-
-`index.html` line ~400 区域"16 领域索引"，每行 4 字段：
-
-```html
-<a class="toc-row" href="...">
-    <span class="toc-name">视觉创作</span>
-    <span class="toc-count">23</span>
-    <span class="toc-tags">AI 生图 / PPT / 配图 / 漫画 / Vlog / 公众号主题库</span>
-    <span class="toc-go">浏览</span>
-</a>
+# 月初 1 号 04:00  四季地图校准
+0 4 1 * * python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py season-map
 ```
 
-**改哪几个数字会全站联动**：
+---
 
-- `index.html` line ~190（cover 区域右侧"87 case"）
-- `index.html` line ~440（VIP 五档首"87 case 全部解锁"）
-- `__auth/account.html` line ~140（订阅页"87 case 全部解锁"）
+## 关联项目
+
+| 项目 | 仓库 | 关系 |
+|------|------|------|
+| **idea-to-trade** | https://github.com/huangrichao2020/idea-to-trade | 方法论 + Skill 源 |
+| **机会挖掘 Skill** | idea-to-trade/skill/idea-trade-qa/ | 9 类场景模板 + CLI |
+| **10088-store** | https://github.com/huangrichao2020/10088-store | 本仓库（前端展示）|
 
 ---
 
-## VIP 5 档定价（当前是占位，等商业化定）
+## 版本
 
-| 档位 | 月费 | 年费 | 包含 |
-|---|---|---|---|
-| 第一档 · 免费试用 | ¥0 | — | 30% case + 社区文档 |
-| 第二档 · 个人 VIP | ¥? | ¥? | 87 case 全部解锁 · 月度更新 5+ |
-| 第三档 · 团队 VIP | — | ¥? | 5 账号共享 · 团队空间 · 协作笔记 |
-| 第四档 · 企业 VIP | — | ¥? | 私有部署 · SLA 99.9% · 数据不出网 |
-| 第五档 · 定制咨询 | — | 议价 | 1v1 · 驻场实施 · 行业专项方案 |
-
-**改位置**：`index.html` line ~440（VIP 五档蛋糕）
-
----
-
-## 商业化模型 · 「skill 触发订阅」
-
-- **4 大付费 hook**：① 立即订阅 VIP ② 立即查看 ③ 立即试用 ④ 立即加入
-- **3 支付方式**（占位「开发中」）：支付宝 A2A / 微信支付 / Stripe
-- **支付宝 A2A 接入**：[https://a2a.alipay.com/#collection](https://a2a.alipay.com/#collection)（智能体支付协议，2025-2026 推出）
-- **不做的红线**：不预收钱 / 不承诺实测 SLA / 不锁单方定价（"价格开发中"显式占位）
-
-**改支付方式**（订阅页）：`__auth/account.html` 底部"订阅方法开发"区（line ~250）
-
----
-
-## 部署（aliyun nginx）
-
-> 已部署在 `https://ai10088.com/10088-store/`，nginx 配置 + 路径方案 vs 子域名决策见 aliyun-server-ops SOP
-
-**快速部署**（如果你换服务器）：
-
-```bash
-# 1. 上传（rsync / scp）
-rsync -avz --delete \
-  /Users/tingchi/Desktop/10088-store/ \
-  aliyun:/www/wwwroot/10088-store/
-
-# 2. nginx 加 location（详见 aliyun-server-ops.md）
-# location ^~ /10088-store/ {
-#     alias /www/wwwroot/10088-store/;
-#     index index.html;
-#     try_files $uri $uri/ =404;
-#     add_header Cache-Control "no-cache";
-# }
-
-# 3. 测 + reload
-ssh aliyun "nginx -t && systemctl reload nginx"
-```
-
-**注意**：路径是 `/10088-store/`（不是 `/10088-store` 或 `/10088-store/index.html`）—— `^~` + `alias` 模式。
-
----
-
-## 设计灵感 · 复刻自 aichainmap
-
-**布局复刻自 [AI 产业链地图 · 知识库 (aichainmap)](https://aichainmap.com/)（MIT 协议）**。我们在其布局基础上：
-
-1. 替换所有内容为 pretty-skills 87 case
-2. 自制 PS logo（SVG）替换 aichainmap A 字 logo
-3. 加 /__auth/account.html 订阅占位
-4. footer 加 aichainmap MIT attribution 显式致谢
-
-**为什么复刻 aichainmap 布局**：
-
-- 排版密度高、信息层次清晰（很适合 87 case 武器库这类"大量信息 + 轻交互"场景）
-- 侧栏 + 主区 grid（既保留导航又突出核心 case）
-- 衬线大字标题 + 数字指标框（量化疗效，符合 pretty-skills 收口硬规则）
-- MIT 协议（商业可用 + 显式致谢）
-
-**怎么找到这个布局的**：`/Users/tingchi/.mavis/agents/mavis/memory/ai-website-cloner.md` 记录了 5 阶段克隆 pipeline。
-
----
-
-## 维护清单
-
-**改文案**（你正在做的事）：直接 vscode 改 `index.html` / `__auth/account.html`，刷新浏览器看效果
-
-**改 case 数量**：改完后**必须同步改**这 3 处：
-
-- `index.html` cover 区域"87 case"数字
-- `index.html` VIP 五档"87 case 全部解锁"
-- `__auth/account.html` 订阅页"87 case 全部解锁"
-
-**改完 push 到 GitHub**：
-
-```bash
-cd ~/Desktop/10088-store
-git add .
-git commit -m "feat: 改文案 ..."
-git push origin main
-```
-
-**同步到 aliyun**（改了 HTML 之后）：
-
-```bash
-rsync -avz --delete \
-  /Users/tingchi/Desktop/10088-store/ \
-  aliyun:/www/wwwroot/10088-store/
-
-ssh aliyun "systemctl reload nginx"
-```
+- **v0.1**（2026-08-20）· idea-store 初次集成
+  - 5 个新板块 + 四季地图
+  - idea-trade-qa CLI → JSON 输出
+  - aliyun cron 定时任务
+  - 前端拉 JSON 渲染
 
 ---
 
@@ -212,4 +152,4 @@ MIT — 与 aichainmap 协议一致
 
 ## 作者
 
-**Mavis**（MiniMax As a Jarvis）· Mavis · 2026-07-17 v0.1 上线
+**小源**（WorkBuddy · MiniMax-M3）· 2026-08-20 v0.1 上线

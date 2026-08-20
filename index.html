@@ -3,804 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>首页 · pretty-skills 武器库</title>
+<title>idea-store · 机会挖掘 · A股智能决策</title>
 <link rel="icon" href="assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/shared.css?v=c436cc33a8">
-<script defer src="assets/auth-chrome.js?v=4649cabb7d"></script>
-<script defer src="assets/main.js?v=704c216a21"></script>
-<style>
-.cover {
-  /* 左侧文字（眉标+标题+简介）+ 右侧统计框，两栏并排同行对应。
-     左栏加宽到 1.85fr 给标题让位（11 字一行），右侧统计框窄一点照样放得下三行数字 */
-  display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
-  gap: 40px; align-items: center;
-  padding: 30px 0 22px;
-  border-bottom: 1px solid var(--ink);
-}
-.cv-eyebrow {
-  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
-  font-family: var(--mono); font-size: 10.5px;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 18px;
-}
-.cv-eyebrow .seal { padding: 2px 8px; border: 1px solid var(--stamp); color: var(--stamp); letter-spacing: 2px; font-weight: 600; }
-.cv-eyebrow .vol { font-family: var(--mono); font-weight: 600; color: var(--ink); letter-spacing: 2.5px; font-size: 11px; }
-.cv-title {
-  font-family: var(--cn); font-weight: 900;
-  /* 字号压到能在左栏一行放下 11 字（宽屏一行；窄屏用下方 @media 缩到更小，放不下时自然换行）*/
-  font-size: 60px; line-height: 1.05; letter-spacing: -2px;
-  margin: 0;
-  display: flex; align-items: center; gap: 16px;
-}
-.cv-logo { flex: none; width: 72px; height: 72px; display: block; }
-.cv-titletext { display: inline; }
-.cv-title .glyph {
-  font-family: var(--mono); font-weight: 400;
-  color: var(--stamp); font-size: 0.18em;
-  letter-spacing: 0; margin-left: 22px;
-  vertical-align: 32px;
-}
-.cv-deck {
-  font-family: var(--cn); font-size: 15px; line-height: 1.75;
-  color: var(--ink-soft);
-  margin: 22px 0 0; max-width: 600px;
-}
-.cv-deck strong { color: var(--ink); font-weight: 700; }
-.cv-deck code {
-  font-family: var(--mono); font-size: 0.92em;
-  color: var(--accent); background: none;
-  border-bottom: 1px dotted var(--accent);
-  padding: 0;
-}
-.cv-fact {
-  background: var(--bg-2); border: 1px solid var(--ink);
-  padding: 18px 20px; position: relative; font-family: var(--mono);
-}
-.cv-fact::before {
-  content: '⌗ 本库收录';
-  position: absolute; top: -9px; left: 14px;
-  background: var(--bg); padding: 0 8px;
-  font-size: 9px; letter-spacing: 2.5px;
-  color: var(--ink-faint);
-}
-.cv-fact-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding-bottom: 10px; border-bottom: 1px solid var(--ink);
-  margin-bottom: 12px;
-}
-.cv-fact-head .t { font-family: var(--mono); font-weight: 700; font-size: 22px; color: var(--accent); letter-spacing: 1px; }
-.cv-fact-head .e { font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); padding: 2px 7px; border: 1px solid var(--accent); border-radius: 1px; }
-.cv-fact dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 5px 12px; font-family: var(--mono); font-size: 13px; }
-.cv-fact dt { font-family: var(--cn); color: var(--ink); font-size: 13px; align-self: baseline; }
-.cv-fact dt em { font-family: var(--mono); font-style: normal; font-size: 9px; letter-spacing: 1.5px; color: var(--ink-faint); text-transform: uppercase; margin-left: 4px; }
-.cv-fact dd { margin: 0; font-weight: 600; font-size: 16px; color: var(--ink); letter-spacing: -0.3px; text-align: right; }
-.cv-fact-total { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--ink); display: flex; justify-content: space-between; align-items: baseline; }
-.cv-fact-total .lab { font-family: var(--cn); font-weight: 700; font-size: 14px; color: var(--ink); }
-.cv-fact-total .num { font-family: var(--mono); font-weight: 700; font-size: 22px; color: var(--stamp); letter-spacing: -0.5px; }
-
-.cake-cta {
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 16px 22px;
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--bg-2);
-  transition: all .12s;
-  gap: 20px;
-}
-.cake-cta:hover { background: var(--stamp); border-color: var(--stamp); }
-.cake-cta .left { display: flex; align-items: baseline; gap: 16px; min-width: 0; }
-.cake-cta .left > div { min-width: 0; flex: 1; }
-.cake-cta .glyph { font-family: var(--mono); font-weight: 600; font-size: 12px; color: var(--stamp); padding: 3px 10px; background: var(--bg-2); letter-spacing: 2px; border-radius: 1px; white-space: nowrap; flex: 0 0 auto; }
-.cake-cta .title { font-family: var(--cn); font-weight: 700; font-size: 17px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cake-cta .sub { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(250,250,247,.65); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cake-cta .arrow { font-family: var(--mono); font-size: 26px; color: var(--bg-2); }
-.cake-cta.live-cta { background: var(--bg-2); color: var(--ink); border-color: var(--ink); margin-top: 10px; }
-.cake-cta.live-cta:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-2); }
-.cake-cta.live-cta .glyph { background: var(--stamp); color: var(--bg-2); }
-.cake-cta.live-cta .sub { color: var(--ink-faint); }
-.cake-cta.live-cta .arrow { color: var(--ink); }
-.cake-cta.live-cta:hover .sub, .cake-cta.live-cta:hover .arrow { color: rgba(250,250,247,.9); }
-.cake-cta.reports-cta { background: var(--bg-2); color: var(--ink); border-color: var(--ink); margin-top: 10px; }
-.cake-cta.reports-cta:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-2); }
-.cake-cta.reports-cta .glyph { background: var(--accent); color: var(--bg-2); }
-.cake-cta.reports-cta .sub { font-family: var(--cn); text-transform: none; letter-spacing: 0; font-size: 12px; color: var(--ink-soft); margin-top: 5px; line-height: 1.55; }
-.cake-cta.reports-cta .arrow { color: var(--ink); }
-.cake-cta.reports-cta:hover .title, .cake-cta.reports-cta:hover .sub, .cake-cta.reports-cta:hover .arrow { color: rgba(250,250,247,.92); }
-
-.syn-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1px; background: var(--ink); border: 1px solid var(--ink);
-}
-.syn { background: var(--bg-2); padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: all .12s; position: relative; min-height: 100px; }
-.syn:hover { background: var(--bg-3); }
-.syn .mk { font-family: var(--cn); font-weight: 900; font-size: 28px; line-height: 1; color: var(--stamp); letter-spacing: -1px; }
-.syn .nm { font-family: var(--cn); font-weight: 700; font-size: 15px; letter-spacing: -0.2px; color: var(--ink); }
-.syn .geo { font-family: var(--mono); font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-faint); }
-.syn.cn .mk { color: var(--x-a); }
-.syn.us .mk { color: var(--accent); }
-
-.dispatch { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
-.dis-col h3 { margin: 0 0 12px; font-family: var(--mono); font-weight: 600; font-size: 11px; letter-spacing: 2.2px; text-transform: uppercase; color: var(--ink); padding-bottom: 8px; border-bottom: 1px solid var(--ink); display: flex; justify-content: space-between; align-items: baseline; }
-.dis-col h3 .meta { font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: 1.5px; color: var(--ink-faint); }
-.dis-col h3 a { color: var(--ink); }
-.dis-col h3 a:hover { color: var(--stamp); }
-
-.hot-table { display: flex; flex-direction: column; }
-.hot-row {
-  display: grid;
-  grid-template-columns: 30px 1fr auto auto;
-  align-items: baseline;
-  gap: 12px;
-  padding: 8px 6px;
-  border-bottom: 0.5px solid var(--rule-faint);
-  transition: background .1s;
-}
-.hot-row:hover { background: var(--bg-2); }
-.hot-row:hover .nm { color: var(--stamp); }
-.hot-row .rank { font-family: var(--mono); font-weight: 500; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.5px; text-align: right; }
-.hot-row .nm { font-family: var(--cn); font-weight: 600; font-size: 14.5px; color: var(--ink); letter-spacing: -0.2px; }
-.hot-row .tk { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.3px; padding: 1px 6px; border-radius: 1px; white-space: nowrap; }
-.hot-row .tk.x-a    { background: var(--l1-bg); color: var(--x-a); }
-.hot-row .tk.x-h    { background: rgba(184,134,11,.10); color: var(--x-h); }
-.hot-row .tk.x-us   { background: var(--l2-bg); color: var(--x-us); }
-.hot-row .tk.x-other{ background: var(--l4-bg); color: var(--x-other); }
-.hot-row .tk.x-priv { background: transparent; color: var(--ink-faint); font-style: italic; }
-.hot-row .ref { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.3px; }
-
-.evt-list { display: flex; flex-direction: column; }
-.evt-row { display: grid; grid-template-columns: 80px 1fr; gap: 14px; padding: 8px 6px; border-bottom: 0.5px solid var(--rule-faint); align-items: baseline; }
-.evt-row:hover { background: var(--bg-2); }
-.evt-row:hover .nm { color: var(--stamp); }
-.evt-row .dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.8px; color: var(--ink-faint); }
-.evt-row .nm { font-family: var(--cn); font-size: 14px; color: var(--ink); line-height: 1.5; }
-
-.cloud { padding: 22px 24px; background: var(--bg-2); border: 1px solid var(--rule); line-height: 2.3; font-family: var(--cn); text-align: justify; }
-.cloud a { color: var(--ink); border-bottom: 1px dotted transparent; margin: 0 5px; padding-bottom: 1px; transition: all .1s; white-space: nowrap; }
-.cloud a:hover { color: var(--stamp); border-bottom-color: var(--stamp); }
-
-.ppl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 36px; }
-.ppl-row { display: grid; grid-template-columns: 24px 1fr 1fr auto; align-items: baseline; gap: 12px; padding: 8px 6px; border-bottom: 0.5px solid var(--rule-faint); }
-.ppl-row:hover { background: var(--bg-2); }
-.ppl-row:hover .nm { color: var(--stamp); }
-.ppl-row .rank { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); text-align: right; }
-.ppl-row .nm { font-family: var(--cn); font-weight: 600; font-size: 14px; color: var(--ink); }
-.ppl-row .role { font-family: var(--cn); font-size: 11.5px; color: var(--ink-soft); }
-.ppl-row .ref { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
-
-.cake { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--ink); border: 1px solid var(--ink); }
-.cake-l { background: var(--bg-2); padding: 14px 16px; min-height: 130px; display: flex; flex-direction: column; gap: 4px; transition: all .12s; position: relative; }
-.cake-l:hover { background: var(--bg-3); }
-.cake-l .eyebrow { font-family: var(--mono); font-size: 9.5px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
-.cake-l .name { font-family: var(--cn); font-weight: 800; font-size: 16px; letter-spacing: -0.3px; color: var(--ink); margin-top: 2px; }
-.cake-l .gloss { font-family: var(--cn); font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); margin-top: 4px; flex: 1; }
-.cake-l .stat { font-family: var(--mono); font-size: 9.5px; letter-spacing: 1px; color: var(--ink-faint); margin-top: 6px; display: flex; gap: 12px; }
-.cake-l .stat b { color: var(--ink); font-weight: 700; font-size: 12px; margin-right: 2px; }
-.cake-l1 { border-top: 3px solid var(--l1); }
-.cake-l2 { border-top: 3px solid var(--l2); }
-.cake-l3 { border-top: 3px solid var(--l3); }
-.cake-l4 { border-top: 3px solid var(--l4); }
-.cake-l5 { border-top: 3px solid var(--l5); }
-
-.sect { padding: 36px 0 8px; }
-.sect-head { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--ink); gap: 16px; flex-wrap: wrap; }
-.sect-head .left { display: flex; align-items: baseline; gap: 14px; }
-.sect-num { font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 4px 10px; background: var(--ink); color: var(--bg-2); letter-spacing: 2px; border-radius: 1px; }
-.sect-title { margin: 0; font-family: var(--cn); font-weight: 800; font-size: 22px; letter-spacing: -0.3px; }
-.sect-sub { font-family: var(--mono); font-size: 10px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--ink-faint); }
-.sect-cta { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink); padding: 4px 10px; border: 1px solid var(--ink); border-radius: 1px; transition: all .12s; }
-.sect-cta:hover { background: var(--ink); color: var(--bg-2); }
-
-.toc { display: flex; flex-direction: column; }
-.toc-row { display: grid; grid-template-columns: 1fr 80px 2fr 60px; align-items: baseline; gap: 14px; padding: 12px 8px; border-bottom: 0.5px solid var(--rule-faint); transition: background .1s; }
-.toc-row:hover { background: var(--bg-2); }
-.toc-row:hover .ix-name { color: var(--stamp); }
-.toc-row .ix-num { font-family: var(--mono); font-weight: 600; font-size: 12px; color: var(--stamp); letter-spacing: 1px; }
-.toc-row .ix-name { font-family: var(--cn); font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.2px; }
-.toc-row .ix-count { font-family: var(--mono); font-weight: 600; font-size: 16px; color: var(--ink); }
-.toc-row .ix-count em { font-family: var(--cn); font-style: normal; font-size: 10px; color: var(--ink-faint); margin-left: 3px; }
-.toc-row .ix-desc { font-family: var(--cn); font-size: 12px; color: var(--ink-soft); }
-.toc-row .ix-go { font-family: var(--mono); font-size: 10px; letter-spacing: 1.8px; color: var(--ink-faint); text-align: right; }
-.toc-row:hover .ix-go { color: var(--stamp); }
-
-@media (max-width: 1024px) {
-  .cover { grid-template-columns: 1fr; gap: 26px; align-items: start; }
-  .cv-title { font-size: 48px; letter-spacing: -1.5px; gap: 12px; }
-  .cv-logo { width: 56px; height: 56px; }
-  .cake { grid-template-columns: 1fr; }
-  .syn-grid { grid-template-columns: repeat(3, 1fr); }
-  .dispatch, .ppl-grid { grid-template-columns: 1fr; gap: 28px; }
-}
-</style>
+<link rel="stylesheet" href="assets/idea-store.css?v=001">
+<script defer src="assets/idea-store.js?v=001"></script>
 </head>
 <body>
 
+<!-- ════════ Top Strip ════════ -->
 <div class="strip">
   <div class="left">
-    <a class="brand" href="home.html">pretty-skills<span class="kb">·武器库</span></a>
+    <a class="brand" href="/idea-store/">idea-store<span class="kb">·机会挖掘</span></a>
     <span class="crumb"><b>首页</b></span>
   </div>
   <div class="right">
-    <span class="wip-badge" title="付费 VIP 即将上线">🚧 VIP 即将上线</span>
-    <span class="live"><span class="dot"></span>更新 2026·07·17</span>
-    <a class="btn btn-account" href="/__auth/account" title="立即订阅 VIP（解锁 87 case）">⭐ 立即订阅 VIP</a>
-    <a class="btn" href="atlas.html">→ 武器库</a>
+    <span class="live"><span class="dot"></span><span id="last-update">加载中…</span></span>
+    <a class="btn" href="https://github.com/huangrichao2020/idea-to-trade" target="_blank" rel="noopener">→ idea-to-trade</a>
   </div>
 </div>
+
 <div class="book">
+
+  <!-- ════════ Sidebar (spine) ════════ -->
   <aside class="spine">
     <div class="spine-head">
-      <a href="home.html" class="spine-logo">
-        <span class="name">pretty-skills<span class="kb">·武器库</span></span>
-        <span class="vol">🚧 VIP 即将上线</span>
+      <a href="/idea-store/" class="spine-logo">
+        <span class="name">idea-store<span class="kb">·机会挖掘</span></span>
+        <span class="vol">AI 每日定时</span>
       </a>
     </div>
 
-    <div class="spine-search">
-      <input type="search" id="sb-search" placeholder="搜索 case / 领域 / 场景…" autocomplete="off">
-      <div class="sb-search-results" id="sb-search-results"></div>
+    <div class="spine-section">
+      <div class="spine-section-label">核心能力</</div>
+      <a class="spine-link active" href="#hero"><span class="label">首页</span></a>
+      <a class="spine-link" href="#low-position"><span class="label">🎯 低位机会分析</span></a>
+      <a class="spine-link" href="#us-megastar"><span class="label">🌙 美股→大 A</span></a>
+      <a class="spine-link" href="#daily-review"><span class="label">📊 今日复盘</span></a>
+      <a class="spine-link" href="#premarket"><span class="label">🌅 盘前机会</span></a>
+      <a class="spine-link" href="#forecast"><span class="label">🔮 明日预测</span></a>
+      <a class="spine-link" href="#season-map"><span class="label">🗺️ 四季地图</span></a>
     </div>
 
     <div class="spine-section">
-      <div class="spine-section-label">总览</div>
-      <a class="spine-link active" href="home.html"><span class="label">首页</span></a>
-      <a class="spine-link" href="#vip"><span class="label">VIP 订阅</span><span class="badge">5 档</span></a>
-      <a class="spine-link" href="#cases"><span class="label">全部 case</span><span class="badge">87</span></a>
-      <a class="spine-link" href="#domains"><span class="label">16 领域</span></a>
-      <a class="spine-link" href="#scenarios"><span class="label">7 大场景</span></a>
-      <a class="spine-link nav-account" href="/__auth/account"><span class="label">登录 / 订阅</span></a>
-    </div>
-
-    <div class="spine-section">
-      <div class="spine-section-label">领域索引</div>
-      <a class="spine-link" href="#agent"><span class="label">Agent 知识</span><span class="badge">3</span></a>
-      <a class="spine-link" href="#dev"><span class="label">编程开发</span><span class="badge">4</span></a>
-      <a class="spine-link" href="#data"><span class="label">数据科学</span><span class="badge">1</span></a>
-      <a class="spine-link" href="#product"><span class="label">产品设计</span><span class="badge">1</span></a>
-      <a class="spine-link" href="#biz"><span class="label">商业运营</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#finance"><span class="label">金融投资</span><span class="badge">14</span></a>
-      <a class="spine-link" href="#content"><span class="label">内容创作</span><span class="badge">16</span></a>
-      <a class="spine-link" href="#edu"><span class="label">教育学习</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#skill"><span class="label">做事技巧</span><span class="badge">11</span></a>
-      <a class="spine-link" href="#xuan"><span class="label">玄学修炼</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#orange"><span class="label">橙皮书</span><span class="badge">1</span></a>
-      <a class="spine-link" href="#social"><span class="label">社交主导</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#visual"><span class="label">视觉创作</span><span class="badge">23</span></a>
-      <a class="spine-link" href="#story"><span class="label">故事写作</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#emotion"><span class="label">情感领域</span><span class="badge">2</span></a>
-      <a class="spine-link" href="#game"><span class="label">游戏玩家</span><span class="badge">0</span></a>
+      <div class="spine-section-label">数据源</div>
+      <a class="spine-link" href="https://github.com/huangrichao2020/idea-to-trade/tree/main/methodology" target="_blank" rel="noopener"><span class="label">14 个方法论</span></a>
+      <a class="spine-link" href="https://github.com/huangrichao2020/idea-to-trade/tree/main/skill/idea-trade-qa" target="_blank" rel="noopener"><span class="label">Skill: 机会挖掘</span></a>
     </div>
 
     <div class="spine-foot">
-      16 领域 · 87 case · 7 场景<br>
-      <b>3-6 月</b> 实战稳定<br>
-      更新 2026·07·17
-    </div>
-
-    <div class="spine-friends">
-      <div class="spine-section-label">我的其他项目</div>
-      <a class="spine-friend" href="https://github.com/huangrichao2020/pretty-skills" target="_blank" rel="noopener">
-        <span class="sf-logo"><span class="sf-munger-sq" aria-hidden="true" style="background:#497568"></span></span>
-        <span class="sf-text">
-          <span class="sf-title">pretty-skills GitHub</span>
-          <span class="sf-desc">16 领域 87 case 开源仓库 · 3F 范式</span>
-        </span>
-      </a>
-      <a class="spine-friend" href="https://github.com/huangrichao2020/knowhub" target="_blank" rel="noopener">
-        <span class="sf-logo"><span class="sf-munger-sq" aria-hidden="true" style="background:#b8860b"></span></span>
-        <span class="sf-text">
-          <span class="sf-title">knowhub 知识工程</span>
-          <span class="sf-desc">12 领域方法论 · 长期沉淀</span>
-        </span>
-      </a>
+      <span class="spine-fineprint">每日 07:00/07:30/15:30 自动跑</span>
     </div>
   </aside>
-  <main class="leaf">
-    <div class="folio">
-      <div class="crumb"><b>首页</b></div>
-      <div class="sheet"></div>
-    </div>
 
-      <header class="cover" id="top">
-        <div class="cv-main">
-          <div class="cv-eyebrow">
-            <span class="seal">AI 技能武器库</span>
-            <span>公开 16 领域 · 87 case · VIP 解锁</span>
-          </div>
-          <h1 class="cv-title"><img class="cv-logo" src="assets/logo-ps.svg" alt="PS" width="72" height="72"><span class="cv-titletext">pretty-skills<span class="kb">·武器库</span></span></h1>
-          <p class="cv-deck">
-            一个 AI 技能武器库 —— <strong>做 PPT</strong>、<strong>做网页</strong>、<strong>写剧情</strong>、<strong>写项目</strong>、<strong>做股票</strong>、<strong>做情感</strong>、<strong>做自媒体</strong>，
-            7 大场景直达；背靠 <strong>16</strong> 领域、<strong>87</strong> 个实战沉淀的 case，订阅 VIP 一次解锁，agent 可直接调用，<code>学一下 XXX</code> 即学即用。
+  <!-- ════════ Main Content ════════ -->
+  <main class="leaf">
+
+    <!-- Hero -->
+    <section class="sect hero-sect" id="hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <span class="hero-kicker">A 股智能决策平台</span>
+          <h1 class="hero-title">
+            机会挖掘<br>
+            <span class="hero-sub">从左侧挖掘 · 接盘防御 · 鱼身定位</span>
+          </h1>
+          <p class="hero-desc">
+            基于 idea-to-trade 方法论 + 每日 AI 定时任务。<br>
+            5 大板块 + 1 个交易地图，全自动每日更新。<br>
+            <span class="hero-data">数据源：NeoData · westockdata · akshare · WebSearch</span>
           </p>
         </div>
-        <div class="cv-fact">
-          <div class="cv-fact-head">
-            <span class="t">87</span>
-            <span class="e">个 case</span>
+        <div class="hero-right">
+          <div class="hero-stat">
+            <span class="num">6</span>
+            <span class="label">核心板块</span>
           </div>
-          <dl>
-            <dt><a href="#domains" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">领域</a></dt><dd><a href="#domains" style="color:inherit;text-decoration:none;">16</a></dd>
-            <dt><a href="#scenarios" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">场景</a></dt><dd><a href="#scenarios" style="color:inherit;text-decoration:none;">7</a></dd>
-            <dt><a href="#vip" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">VIP 档</a></dt><dd><a href="#vip" style="color:inherit;text-decoration:none;">5</a></dd>
-            <dt><a href="#agents" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">AI 代理</a></dt><dd><a href="#agents" style="color:inherit;text-decoration:none;">12+</a></dd>
-            <dt><a href="#contributors" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">贡献者</a></dt><dd><a href="#contributors" style="color:inherit;text-decoration:none;">30+</a></dd>
-            <dt><a href="#stable" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">稳定期</a></dt><dd><a href="#stable" style="color:inherit;text-decoration:none;">3-6 月</a></dd>
-          </dl>
-          <div class="cv-fact-total">
-            <span class="lab">实战稳定</span>
-            <span class="num">1+ 月</span>
+          <div class="hero-stat">
+            <span class="num">9</span>
+            <span class="label">场景模板</span>
           </div>
-        </div>
-      </header>
-
-      <style>
-.feature-sect{margin:30px 0 14px}
-.feature-lead{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--stamp);text-transform:uppercase;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:18px}
-.feature-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:9px;padding:24px 22px 20px;text-decoration:none;color:inherit;overflow:hidden;transition:transform .15s,box-shadow .15s,border-color .15s}
-.feature-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
-.feature-card:hover{transform:translateY(-4px);box-shadow:0 22px 46px -28px rgba(0,0,0,.4)}
-.fc-atlas::before{background:#2d7a3f}.fc-atlas:hover{border-color:#2d7a3f}
-.fc-serenity::before{background:#b8860b}.fc-serenity:hover{border-color:#b8860b}
-.fc-reports::before{background:#1d4ed8}.fc-reports:hover{border-color:#1d4ed8}
-.fc-course::before{background:#6a3aa8}.fc-course:hover{border-color:#6a3aa8}
-.fc-icon{font-size:22px;margin-bottom:12px;line-height:1}
-.fc-serenity .fc-icon{color:#b8860b}.fc-reports .fc-icon{color:#1d4ed8}.fc-course .fc-icon{color:#6a3aa8}.fc-atlas .fc-icon{color:#2d7a3f}
-.fc-title{font-family:var(--serif);font-weight:800;font-size:19px;margin-bottom:9px;line-height:1.3;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.fc-badge{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:9px;background:var(--accent-soft);color:var(--accent)}
-.fc-serenity .fc-badge{background:#fbf0d8;color:#9a6a00}
-.fc-desc{font-size:14.5px;color:var(--ink);line-height:1.5;margin-bottom:7px;font-weight:500}
-.fc-meta{font-size:12px;color:var(--ink-soft);line-height:1.5;margin-bottom:16px}
-.fc-latest{font-size:12.5px;line-height:1.5;color:var(--ink);background:var(--accent-soft);border-radius:6px;padding:9px 11px;margin-bottom:16px}
-.fc-latest .lt-lab{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.04em;display:block;margin-bottom:4px}
-.fc-latest .lt-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.fc-go{font-family:var(--mono);font-size:12px;font-weight:700;margin-top:auto}
-.fc-serenity .fc-go{color:#b8860b}.fc-reports .fc-go{color:#1d4ed8}.fc-course .fc-go{color:#6a3aa8}.fc-atlas .fc-go{color:#2d7a3f}
-@media(max-width:560px){.feature-grid{grid-template-columns:1fr}}
-</style>
-      <section class="sect feature-sect" id="scenarios">
-        <div class="feature-lead">7 大场景 · 4 大入口</div>
-        <div class="feature-grid">
-          <a class="feature-card fc-serenity" href="#ppt">
-            <div class="fc-icon">◈</div>
-            <div class="fc-title">做 PPT · 真实 .pptx<span class="fc-badge">v2.0</span></div>
-            <div class="fc-desc">AI 生图 + python-pptx 嵌入</div>
-            <div class="fc-meta">5 段式 prompt 模板 · 6 主题任选 · 真实 PowerPoint 可编辑</div>
-            <div class="fc-latest"><span class="lt-lab">📌 最热 case · ai-image-to-pptx</span><span class="lt-title">Mavis 实战 1+ 月 · 8 幕讲解图 + 真实 .pptx 一气呵成</span></div>
-            <div class="fc-go">立即查看 →</div>
-          </a>
-          <a class="feature-card fc-reports" href="#finance">
-            <div class="fc-icon">◆</div>
-            <div class="fc-title">做股票 · 四层融合<span class="fc-badge">日更</span></div>
-            <div class="fc-desc">L0 人性 / L1 情绪 / L2 产业 / L3 证据 + A/B/C/D 分级</div>
-            <div class="fc-latest"><span class="lt-lab">📌 金融投资 14 case</span><span class="lt-title">daily-market-review 每日复盘 · portfolio-diagnosis 持仓诊断 · 卡脖子猎手</span></div>
-            <div class="fc-go">查看 14 case →</div>
-          </a>
-          <a class="feature-card fc-course" href="#emotion">
-            <div class="fc-icon">🎓</div>
-            <div class="fc-title">做情感 · 关系教练<span class="fc-badge">新</span></div>
-            <div class="fc-desc">5 层状态机 + 10 类信号 + 他心通贝叶斯</div>
-            <div class="fc-meta">情感关系号 2 case · emotional-relationship + alpha-attraction</div>
-            <div class="fc-go">进入情感号 →</div>
-          </a>
-          <a class="feature-card fc-atlas" href="#content">
-            <div class="fc-icon">▦</div>
-            <div class="fc-title">做自媒体 · 9 模板<span class="fc-badge">VIP</span></div>
-            <div class="fc-desc">3 账号 × 9 模板 × 5 平台 × 5 大产物</div>
-            <div class="fc-meta">口播稿 / 封面 prompt / 配图 / 标题 / 简介</div>
-            <div class="fc-go">查看 16 case →</div>
-          </a>
-        </div>
-      </section>
-
-
-      <section class="sect" id="vip">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">壹</span>
-            <h2 class="sect-title">VIP 五档 · 从免费到定制</h2>
-            <span class="sect-sub">87 case · 全场景解锁 · 价格开发中</span>
+          <div class="hero-stat">
+            <span class="num">14</span>
+            <span class="label">方法论</span>
           </div>
-          <a class="sect-cta" href="/__auth/account">立即订阅</a>
-        </div>
-        <div class="cake">
-
-        <div class="cake-l cake-l1">
-          <div class="eyebrow">第一档</div>
-          <div class="name">免费试用</div>
-          <div class="gloss">看 30% case · 社区文档 · skill 名称/方法论摘要。订阅按钮已就位 · 详细方案开发中。</div>
-          <div class="stat"><span><b>¥0</b>/月</span><span><b>无限期</b></span></div>
-        </div>
-        <div class="cake-l cake-l2">
-          <div class="eyebrow">第二档</div>
-          <div class="name">个人 VIP</div>
-          <div class="gloss">87 case 全部解锁 · 月度新增 5+ · 学一下 XXX 即学即用 · agent 可直接调用。</div>
-          <div class="stat"><span><b>¥?</b>/月</span><span><b>87</b> case</span></div>
-        </div>
-        <div class="cake-l cake-l3">
-          <div class="eyebrow">第三档</div>
-          <div class="name">团队 VIP</div>
-          <div class="gloss">5 账号共享 · 团队空间 · 协作笔记 · 优先邮件支持 · 7 大场景全覆盖。</div>
-          <div class="stat"><span><b>¥?</b>/年</span><span><b>5</b> 账号</span></div>
-        </div>
-        <div class="cake-l cake-l4">
-          <div class="eyebrow">第四档</div>
-          <div class="name">企业 VIP</div>
-          <div class="gloss">私有部署 · SLA 99.9% · 数据不出网 · 定制 case 季度更新 · 1v1 顾问。</div>
-          <div class="stat"><span><b>¥?</b>/年</span><span><b>无限</b> 账号</span></div>
-        </div>
-        <div class="cake-l cake-l5">
-          <div class="eyebrow">第五档</div>
-          <div class="name">定制咨询</div>
-          <div class="gloss">按需定制 skill · 驻场实施 · 7×24 支持 · 行业专属方案 · 投后跟踪。</div>
-          <div class="stat"><span><b>议价</b></span><span><b>1v1</b> 服务</span></div>
-        </div>
-        </div>
-      </section>
-
-      <section class="sect" id="domains">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">贰</span>
-            <h2 class="sect-title">16 领域索引</h2>
-            <span class="sect-sub">按 case 数倒序</span>
-          </div>
-          <a class="sect-cta" href="#">展开全部</a>
-        </div>
-        <div class="toc">
-          <a class="toc-row" id="visual" href="#"><span class="ix-name">视觉创作</span><span class="ix-count">23<em>个</em></span><span class="ix-desc">AI 生图 / PPT / 配图 / 漫画 / Vlog / 公众号主题库</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="content" href="#"><span class="ix-name">内容创作</span><span class="ix-count">16<em>个</em></span><span class="ix-desc">公众号 / 小红书 / 端到端 / 钩子链 / 杂志风 / 口播稿</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="finance" href="#"><span class="ix-name">金融投资</span><span class="ix-count">14<em>个</em></span><span class="ix-desc">A 股 9 主题：卡脖子 / 复盘 / 持仓 / 宏观 / 财报 / 事件驱动</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">做事技巧</span><span class="ix-count">11<em>个</em></span><span class="ix-desc">H5 设计 / agent-browser / 文档处理 / 项目管理</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">编程开发</span><span class="ix-count">4<em>个</em></span><span class="ix-desc">browser-act / git / meoo-cli / 领域增改避坑</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="agent" href="#"><span class="ix-name">Agent 知识</span><span class="ix-count">3<em>个</em></span><span class="ix-desc">AI 狼群战法 / Mavis 做事心法 / self-improving-agent</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">商业运营</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">社交电商 / social-media-insights</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">教育学习</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">H5 教程类 / 知识消化工作流</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">玄学修炼</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">达尔文自迭代 / 占星 12 星座</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" href="#"><span class="ix-name">社交主导</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">persona-lab / sales-powermap</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="story" href="#"><span class="ix-name">故事写作</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">知乎风短篇 + 写作剧情推演 18 方法论</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="emotion" href="#"><span class="ix-name">情感领域</span><span class="ix-count">2<em>个</em></span><span class="ix-desc">情感关系教练 + Alpha 吸引与安全依恋</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="data" href="#"><span class="ix-name">数据科学</span><span class="ix-count">1<em>个</em></span><span class="ix-desc">industry-research-report 行业研报</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="product" href="#"><span class="ix-name">产品设计</span><span class="ix-count">1<em>个</em></span><span class="ix-desc">prd-master 产品 PRD 写作</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="orange" href="#"><span class="ix-name">橙皮书</span><span class="ix-count">1<em>个</em></span><span class="ix-desc">5 步流水线 · 30-60 天搞懂陌生领域 + 沉淀成书</span><span class="ix-go">浏览</span></a>
-          <a class="toc-row" id="game" href="#"><span class="ix-name">游戏玩家</span><span class="ix-count">0<em>个</em></span><span class="ix-desc" style="color:var(--stamp);">⏳ 即将开放 · 欢迎全球开发者提 PR</span><span class="ix-go">占位</span></a>
-        </div>
-      </section>
-
-      <section class="sect" id="agents">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">叁</span>
-            <h2 class="sect-title">12+ AI 代理</h2>
-            <span class="sect-sub">主流编码代理全部支持 · 跨平台 skill 同步</span>
-          </div>
-          <a class="sect-cta" href="https://github.com/huangrichao2020/pretty-skills">查看同步脚本</a>
-        </div>
-        <div class="syn-grid">
-
-        <a class="syn us" href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">
-          <span class="mk">C</span>
-          <span class="nm">Claude Code</span>
-          <span class="geo">⭐ 推荐 · Opus 4.8</span>
-        </a>
-        <a class="syn us" href="https://github.com/openai/codex" target="_blank" rel="noopener">
-          <span class="mk">X</span>
-          <span class="nm">Codex CLI</span>
-          <span class="geo">OPENAI</span>
-        </a>
-        <a class="syn us" href="https://github.com/sst/opencode" target="_blank" rel="noopener">
-          <span class="mk">O</span>
-          <span class="nm">OpenCode</span>
-          <span class="geo">SST</span>
-        </a>
-        <a class="syn us" href="https://github.com/features/copilot" target="_blank" rel="noopener">
-          <span class="mk">G</span>
-          <span class="nm">GitHub Copilot</span>
-          <span class="geo">GITHUB</span>
-        </a>
-        <a class="syn us" href="https://www.cursor.com" target="_blank" rel="noopener">
-          <span class="mk">C</span>
-          <span class="nm">Cursor</span>
-          <span class="geo">CURSOR</span>
-        </a>
-        <a class="syn us" href="https://codeium.com/windsurf" target="_blank" rel="noopener">
-          <span class="mk">W</span>
-          <span class="nm">Windsurf</span>
-          <span class="geo">CODEIUM</span>
-        </a>
-        <a class="syn us" href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener">
-          <span class="mk">G</span>
-          <span class="nm">Gemini CLI</span>
-          <span class="geo">GOOGLE</span>
-        </a>
-        <a class="syn us" href="https://github.com/cline/cline" target="_blank" rel="noopener">
-          <span class="mk">C</span>
-          <span class="nm">Cline</span>
-          <span class="geo">OPENSOURCE</span>
-        </a>
-        <a class="syn us" href="https://roocode.com" target="_blank" rel="noopener">
-          <span class="mk">R</span>
-          <span class="nm">Roo Code</span>
-          <span class="geo">OPENSOURCE</span>
-        </a>
-        <a class="syn us" href="https://www.continue.dev" target="_blank" rel="noopener">
-          <span class="mk">C</span>
-          <span class="nm">Continue</span>
-          <span class="geo">OPENSOURCE</span>
-        </a>
-        <a class="syn us" href="https://aws.amazon.com/q/" target="_blank" rel="noopener">
-          <span class="mk">Q</span>
-          <span class="nm">Amazon Q</span>
-          <span class="geo">AWS</span>
-        </a>
-        <a class="syn us" href="https://www.augmentcode.com" target="_blank" rel="noopener">
-          <span class="mk">A</span>
-          <span class="nm">Augment Code</span>
-          <span class="geo">AUGMENT</span>
-        </a>
-        <a class="syn us" href="https://aider.chat" target="_blank" rel="noopener">
-          <span class="mk">A</span>
-          <span class="nm">Aider</span>
-          <span class="geo">OPENSOURCE</span>
-        </a>
-        </div>
-      </section>
-
-      <section class="sect" id="cases">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">肆</span>
-            <h2 class="sect-title">近况</h2>
+          <div class="hero-stat">
+            <span class="num">30+</span>
+            <span class="label">每日 AI 调用</span>
           </div>
         </div>
-        <div class="dispatch">
-          <div class="dis-col">
-            <h3><a href="#">热门 case</a><span class="meta">按实战引用量</span></h3>
-            <div class="hot-table">
+      </div>
+    </section>
 
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/ai-image-to-pptx-AI生图PPT" target="_blank" rel="noopener">
-              <span class="rank">01</span>
-              <span class="nm">ai-image-to-pptx-AI生图PPT</span>
-              <code class="tk x-a">视觉创作 · 8 幕讲解图</code>
-              <span class="ref">↗ 47</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/PPT证据链战法" target="_blank" rel="noopener">
-              <span class="rank">02</span>
-              <span class="nm">PPT证据链战法</span>
-              <code class="tk x-a">视觉创作 · 三段式</code>
-              <span class="ref">↗ 31</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/daily-market-review-每日复盘" target="_blank" rel="noopener">
-              <span class="rank">03</span>
-              <span class="nm">daily-market-review 每日复盘</span>
-              <code class="tk x-us">金融投资 · 4 层融合</code>
-              <span class="ref">↗ 28</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/portfolio-diagnosis-持仓诊断" target="_blank" rel="noopener">
-              <span class="rank">04</span>
-              <span class="nm">portfolio-diagnosis 持仓诊断</span>
-              <code class="tk x-us">金融投资 · A/B/C/D</code>
-              <span class="ref">↗ 24</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/wechat-delivery-公众号端到端交付" target="_blank" rel="noopener">
-              <span class="rank">05</span>
-              <span class="nm">wechat-delivery 公众号端到端</span>
-              <code class="tk x-h">内容创作 · 8 文件</code>
-              <span class="ref">↗ 21</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/公众号爆款操盘术" target="_blank" rel="noopener">
-              <span class="rank">06</span>
-              <span class="nm">公众号爆款操盘术</span>
-              <code class="tk x-h">内容创作 · 5 段钩子链</code>
-              <span class="ref">↗ 19</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/卡脖子猎手" target="_blank" rel="noopener">
-              <span class="rank">07</span>
-              <span class="nm">卡脖子猎手</span>
-              <code class="tk x-us">金融投资 · 选股</code>
-              <span class="ref">↗ 17</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/4维融合诊断PPTX" target="_blank" rel="noopener">
-              <span class="rank">08</span>
-              <span class="nm">4维融合诊断PPTX</span>
-              <code class="tk x-us">金融投资 · 复盘 PPT</code>
-              <span class="ref">↗ 15</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/宏观雷达" target="_blank" rel="noopener">
-              <span class="rank">09</span>
-              <span class="nm">宏观雷达</span>
-              <code class="tk x-us">金融投资 · 早报</code>
-              <span class="ref">↗ 14</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/xiaohongshu-copywriter-小红书文案" target="_blank" rel="noopener">
-              <span class="rank">10</span>
-              <span class="nm">xiaohongshu-copywriter 小红书文案</span>
-              <code class="tk x-h">内容创作 · 爆款</code>
-              <span class="ref">↗ 12</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/dashiai-ppt传统PPT" target="_blank" rel="noopener">
-              <span class="rank">11</span>
-              <span class="nm">dashiai-ppt 传统 PPT</span>
-              <code class="tk x-a">视觉创作 · 6 主题</code>
-              <span class="ref">↗ 10</span>
-            </a>
-            <a class="hot-row" href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/serenity-stock-choke-A股卡脖子" target="_blank" rel="noopener">
-              <span class="rank">12</span>
-              <span class="nm">serenity-stock-choke A股卡脖子</span>
-              <code class="tk x-us">金融投资 · 产业链</code>
-              <span class="ref">↗ 9</span>
-            </a>
-            </div>
-          </div>
-          <div class="dis-col">
-            <h3><a href="#">最近更新</a><span class="meta">按时间</span></h3>
-            <div class="evt-list">
+    <!-- ════════ 板块 1：低位机会逻辑分析 ════════ -->
+    <section class="sect" id="low-position">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">壹</span>
+          <h2 class="sect-title">🎯 低位机会逻辑分析</h2>
+          <span class="sect-sub">基于 methodology/13 左侧挖掘 6 路径 + methodology/15 小市值×SMC</span>
+        </div>
+        <span class="sect-tag" id="low-position-tag">加载中…</span>
+      </div>
+      <div class="low-position-grid" id="low-position-content">
+        <div class="loading">⏳ 加载今日低位机会…</div>
+      </div>
+    </section>
 
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-17</span>
-              <span class="nm">全场景铺开本批 7 case（情感·2 / 故事·1 / 金融·2 / 内容·1 / 橙皮书·1）</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-16</span>
-              <span class="nm">pretty-skills 收口硬规则发布 · 12 领域→16 领域</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-15</span>
-              <span class="nm">故事写作开张 · zhihu-short-story 知乎风短篇</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-10</span>
-              <span class="nm">公众号端到端交付 v3.22 排版硬规则</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-09</span>
-              <span class="nm">合 10 个常用 skill 到出版局（公众号 + 财经 + 玄学 + 编程）</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-08</span>
-              <span class="nm">Vibe-Trading V3 体验优化 · knowhub-SYNC skill 发布</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-02</span>
-              <span class="nm">self-media-script 自媒体口播稿 v2 · 9 模板 5 平台</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-07-01</span>
-              <span class="nm">hyperframes-cli · 视频生产工具栈统一</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-06-30</span>
-              <span class="nm">ai-training-ppt · 8 幕讲解图 + 真实 .pptx（20MB）</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-06-28</span>
-              <span class="nm">Mavis 做事心法 v3.1 · 6 步法 + 沟通铁律</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-06-25</span>
-              <span class="nm">hermes-agent-upgrade · AI 狼群战法实战化</span>
-            </a>
-            <a class="evt-row" href="#">
-              <span class="dt">2026-06-24</span>
-              <span class="nm">氛围 + 主导权研究完成（情感领域 2 case 来源）</span>
-            </a>
-            </div>
-          </div>
+    <!-- ════════ 板块 2：美股最明星板块对今日大 A 的机会 ════════ -->
+    <section class="sect" id="us-megastar">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">贰</span>
+          <h2 class="sect-title">🌙 昨日美股最明星板块对今日大 A 的机会</h2>
+          <span class="sect-sub">美股涨幅 TOP → A 股映射标的 → 联动逻辑 + 风险点</span>
         </div>
-      </section>
+        <span class="sect-tag" id="us-megastar-tag">加载中…</span>
+      </div>
+      <div class="sector-grid" id="us-megastar-content">
+        <div class="loading">⏳ 加载美股明星板块…</div>
+      </div>
+    </section>
 
-      <section class="sect">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">伍</span>
-            <h2 class="sect-title">高频 case</h2>
-            <span class="sect-sub">按实战引用量</span>
-          </div>
-          <a class="sect-cta" href="#domains">浏览全部 87</a>
+    <!-- ════════ 板块 3：大 A 今日复盘 ════════ -->
+    <section class="sect" id="daily-review">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">参</span>
+          <h2 class="sect-title">📊 大 A 今日复盘</h2>
+          <span class="sect-sub">指数 + 市场广度 + 资金流 + 涨停梯队 + 情绪周期</span>
         </div>
-        <div class="cloud">
-          <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/ai-image-to-pptx-AI生图PPT" style="font-size:24px;font-weight:700">ai-image-to-pptx</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/PPT证据链战法" style="font-size:22px;font-weight:700">PPT证据链战法</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/daily-market-review-每日复盘" style="font-size:21px;font-weight:600">daily-market-review</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/portfolio-diagnosis-持仓诊断" style="font-size:20px;font-weight:600">portfolio-diagnosis</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/wechat-delivery-公众号端到端交付" style="font-size:19px;font-weight:600">wechat-delivery</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/卡脖子猎手" style="font-size:19px;font-weight:600">卡脖子猎手</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/公众号爆款操盘术" style="font-size:18px;font-weight:600">公众号爆款操盘术</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/4维融合诊断PPTX" style="font-size:17px;font-weight:500">4维融合诊断PPTX</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/宏观雷达" style="font-size:17px;font-weight:500">宏观雷达</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/xiaohongshu-copywriter-小红书文案" style="font-size:17px;font-weight:500">xiaohongshu-copywriter</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/dashiai-ppt传统PPT" style="font-size:17px;font-weight:500">dashiai-ppt</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/serenity-stock-choke-A股卡脖子" style="font-size:16px;font-weight:500">serenity-stock-choke</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/Agent知识/Mavis做事心法" style="font-size:16px;font-weight:500">Mavis做事心法</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/杂志风公众号品鉴" style="font-size:16px;font-weight:500">杂志风公众号品鉴</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/baoyu-skills" style="font-size:16px;font-weight:500">baoyu-skills</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/拆书-skill" style="font-size:16px;font-weight:500">拆书-skill</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/卡兹克公众号写作" style="font-size:15px;font-weight:500">卡兹克公众号写作</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/橙皮书方法论" style="font-size:15px;font-weight:500">橙皮书方法论</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/wechat-article-creator" style="font-size:15px;font-weight:500">wechat-article-creator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/event-driven-analyzer" style="font-size:15px;font-weight:500">event-driven-analyzer</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/economic-impact-report" style="font-size:15px;font-weight:500">economic-impact-report</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/marginal-tracker" style="font-size:15px;font-weight:500">marginal-tracker</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/macro-monitor" style="font-size:15px;font-weight:500">macro-monitor</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/company-brief" style="font-size:15px;font-weight:500">company-brief</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/金融投资/stock-analysis-v4" style="font-size:15px;font-weight:500">stock-analysis-v4</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/编程开发/browser-act" style="font-size:15px;font-weight:500">browser-act</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/编程开发/git沙箱求生术" style="font-size:15px;font-weight:500">git沙箱求生术</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/编程开发/meoo-cli" style="font-size:15px;font-weight:500">meoo-cli</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/编程开发/领域增改避坑" style="font-size:15px;font-weight:500">领域增改避坑</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/Agent知识/AI狼群战法" style="font-size:14px;font-weight:500">AI狼群战法</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/Agent知识/self-improving-agent" style="font-size:14px;font-weight:500">self-improving-agent</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/ip-character-design" style="font-size:14px;font-weight:500">ip-character-design</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/mavis-fox-ip" style="font-size:14px;font-weight:500">mavis-fox-ip</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/strategy-h5-tool" style="font-size:14px;font-weight:500">strategy-h5-tool</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/wechat-viral-article-creator" style="font-size:14px;font-weight:500">wechat-viral-article-creator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/内容创作/访谈栏目造物者说方法论" style="font-size:14px;font-weight:500">访谈栏目造物者说方法论</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/ai-image-to-pptx-AI生图真实PPTX" style="font-size:14px;font-weight:500">ai-image-to-pptx (v2)</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/auto-vlog-editor" style="font-size:14px;font-weight:500">auto-vlog-editor</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/comic-generator" style="font-size:14px;font-weight:500">comic-generator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/finance-cartoon-creator" style="font-size:14px;font-weight:500">finance-cartoon-creator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/gif-sticker-generator" style="font-size:14px;font-weight:500">gif-sticker-generator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/html-ppt-viewer-HTML阅读器" style="font-size:14px;font-weight:500">html-ppt-viewer</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/oil-cover小红书AI封面" style="font-size:14px;font-weight:500">oil-cover</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/ppt-orchestrator-PPT调度器" style="font-size:14px;font-weight:500">ppt-orchestrator</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/zhongguose-ppt-skill" style="font-size:14px;font-weight:500">zhongguose-ppt</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/scroll-world滚动驱动相机" style="font-size:14px;font-weight:500">scroll-world</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/xiaohongshu-image-creator" style="font-size:14px;font-weight:500">xiaohongshu-image</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/nano-banana-pro" style="font-size:14px;font-weight:500">nano-banana-pro</a> <a href="https://github.com/huangrichao2020/pretty-skills/blob/main/视觉创作/product-visual-creator" style="font-size:14px;font-weight:500">product-visual</a>
-        </div>
-      </section>
+        <span class="sect-tag" id="daily-review-tag">加载中…</span>
+      </div>
+      <div class="review-content" id="daily-review-content">
+        <div class="loading">⏳ 加载今日复盘…</div>
+      </div>
+    </section>
 
-      <section class="sect" id="contributors">
-        <div class="sect-head">
-          <div class="left">
-            <span class="sect-num">陆</span>
-            <h2 class="sect-title">核心贡献者</h2>
-            <span class="sect-sub">按 case 贡献数</span>
-          </div>
-          <a class="sect-cta" href="https://github.com/huangrichao2020/pretty-skills/graphs/contributors">查看全部</a>
+    <!-- ════════ 板块 4：大 A 盘前机会 ════════ -->
+    <section class="sect" id="premarket">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">肆</span>
+          <h2 class="sect-title">🌅 大 A 盘前机会</h2>
+          <span class="sect-sub">每日 07:00 更新 · 隔夜美股映射 + 今日竞价观察</span>
         </div>
-        <div class="ppl-grid">
+        <span class="sect-tag" id="premarket-tag">加载中…</span>
+      </div>
+      <div class="premarket-content" id="premarket-content">
+        <div class="loading">⏳ 加载盘前机会…</div>
+      </div>
+    </section>
 
-        <a class="ppl-row" href="https://github.com/huangrichao2020" target="_blank" rel="noopener">
-          <span class="rank">01</span>
-          <span class="nm">huangrichao2020</span>
-          <span class="role">pretty-skills 创始人 · 武器库主理人</span>
-          <span class="ref">↗ 87</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">02</span>
-          <span class="nm">Mavis</span>
-          <span class="role">Mavis Agent · 实战沉淀 + 3F 范式重写</span>
-          <span class="ref">↗ 31</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">03</span>
-          <span class="nm">MiniMax Code</span>
-          <span class="role">AI 编码代理 · matrix MCP 多模态支持</span>
-          <span class="ref">↗ 23</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">04</span>
-          <span class="nm">花叔 alchaincyf</span>
-          <span class="role">nuwa-skill · 橙皮书方法论作者</span>
-          <span class="ref">↗ 12</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">05</span>
-          <span class="nm">Claude Code</span>
-          <span class="role">Anthropic · 推荐主力代理（Opus 4.8）</span>
-          <span class="ref">↗ 8</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">06</span>
-          <span class="nm">Kun</span>
-          <span class="role">AI 狼群战法 / 卡脖子猎手 共同贡献</span>
-          <span class="ref">↗ 5</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">07</span>
-          <span class="nm">knowhub 团队</span>
-          <span class="role">12 领域方法论 · 长期沉淀</span>
-          <span class="ref">↗ 4</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">08</span>
-          <span class="nm">how-to-agent 项目</span>
-          <span class="role">120+ 技能文件 · 实战沉淀</span>
-          <span class="ref">↗ 3</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">09</span>
-          <span class="nm">redskill 商店</span>
-          <span class="role">第三方 skill 源 · 实战方法论</span>
-          <span class="ref">↗ 3</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">10</span>
-          <span class="nm">Cursor</span>
-          <span class="role">AI 编码代理 · Agent Browser</span>
-          <span class="ref">↗ 2</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">11</span>
-          <span class="nm">Windsurf</span>
-          <span class="role">Codeium · 跨平台 skill 同步</span>
-          <span class="ref">↗ 2</span>
-        </a>
-        <a class="ppl-row" href="#">
-          <span class="rank">12</span>
-          <span class="nm">GitHub Copilot</span>
-          <span class="role">GitHub · 平台分发</span>
-          <span class="ref">↗ 2</span>
-        </a>
+    <!-- ════════ 板块 5：大 A 明日预测 ════════ -->
+    <section class="sect" id="forecast">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">伍</span>
+          <h2 class="sect-title">🔮 大 A 明日预测</h2>
+          <span class="sect-sub">每日 15:30 盘后更新 · 方向 + 概率 + 关键变量 + 操作策略</span>
         </div>
-      </section>
-  </main></div>
-<footer class="colophon" id="stable">
-<div><b>pretty-skills<span class="kb">·武器库</span></b> · 公开档案 · <span class="wip-foot">🚧 VIP 即将上线</span></div><div>更新日期 · 2026·07·17</div><div><a href="home.html">→ 首页</a>&nbsp;·&nbsp;<a href="#vip">→ VIP 订阅</a>&nbsp;·&nbsp;<a href="https://github.com/huangrichao2020/pretty-skills">→ GitHub 仓库</a></div><div class="disclaimer"><b>免责声明</b>　本站为 AI 技能武器库，按 pretty-skills 收口硬规则沉淀；VIP 订阅按使用量计费，价格开发中；case 内容仅供参考，不构成具体投资 / 创作 / 情感建议；agent 实战调用需用户自行审核；第三方 skill 版权归原作者，本仓库按 MIT 协议公开。订阅方法开发中 · 即将上线。<br><br><b>设计灵感</b>　本站布局借鉴自 <a href="https://aichainmap.com" target="_blank" rel="noopener" style="color:inherit;">AI 产业链地图·知识库</a>（MIT 协议），由 Mavis 改造为 pretty-skills 武器库销售页。</div>
-</footer>
+        <span class="sect-tag" id="forecast-tag">加载中…</span>
+      </div>
+      <div class="forecast-content" id="forecast-content">
+        <div class="loading">⏳ 加载明日预测…</div>
+      </div>
+    </section>
+
+    <!-- ════════ 板块 6：四季交易地图 ════════ -->
+    <section class="sect" id="season-map">
+      <div class="sect-head">
+        <div class="left">
+          <span class="sect-num">陆</span>
+          <h2 class="sect-title">🗺️ 四季交易地图</h2>
+          <span class="sect-sub">春升·夏涨·夏末·秋伐·冬藏 · 全年 12 月节奏</span>
+        </div>
+        <span class="sect-tag" id="season-map-tag">加载中…</span>
+      </div>
+      <div class="season-map-content" id="season-map-content">
+        <div class="loading">⏳ 加载四季地图…</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
 </body>
 </html>

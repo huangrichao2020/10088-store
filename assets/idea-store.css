@@ -1,0 +1,547 @@
+/* ════════════════════════════════════════════════════════════════
+   idea-store · 5 板块 + 四季地图样式
+   复用 shared.css 的设计 token
+   ════════════════════════════════════════════════════════════════ */
+
+/* Hero Section */
+.hero-sect {
+  padding: 56px 44px 32px;
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-cover) 100%);
+  border-bottom: 1px solid var(--rule);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 44px;
+  max-width: var(--content-max);
+}
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--stamp);
+  margin-bottom: 14px;
+  display: block;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: 56px;
+  line-height: 1.15;
+  font-weight: 900;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+.hero-sub {
+  font-size: 24px;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 620px;
+}
+.hero-data {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 1px;
+}
+.hero-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.hero-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 20px 18px;
+  text-align: center;
+}
+.hero-stat .num {
+  display: block;
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--stamp);
+  line-height: 1;
+}
+.hero-stat .label {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 1px;
+}
+
+/* ════════ Sect Head 通用样式 ════════ */
+.sect-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.sect-num {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--stamp);
+  margin-right: 14px;
+  vertical-align: middle;
+}
+.sect-title {
+  display: inline-block;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 14px 0 0;
+  color: var(--ink);
+}
+.sect-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.5px;
+}
+.sect-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  padding: 4px 12px;
+  background: var(--bg-cover);
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+.loading {
+  padding: 32px;
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+/* ════════ 板块 1：低位机会（卡片网格）════════ */
+.low-position-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.lop-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 16px 18px;
+  transition: all .15s;
+}
+.lop-card:hover {
+  border-color: var(--stamp);
+  box-shadow: 0 4px 12px rgba(0,0,0,.04);
+}
+.lop-name {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.lop-code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.lop-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.lop-row b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.lop-signal {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 2px;
+  font-size: 10px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 2px;
+}
+.lop-rating {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--rule);
+  font-size: 12px;
+}
+.lop-rating-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  margin-right: 6px;
+  font-weight: 700;
+  font-size: 11px;
+}
+.lop-rating-tag.fish-body { background: #e7f5e7; color: #1f6a3a; }
+.lop-rating-tag.fish-tail { background: #fbe8e3; color: #c8341f; }
+.lop-rating-tag.fish-head { background: #fff5e0; color: #b8860b; }
+.lop-strategy {
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: var(--bg-cover);
+  border-left: 3px solid var(--stamp);
+}
+.lop-strategy-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--stamp);
+  margin-bottom: 8px;
+}
+.lop-strategy-row {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 3px 0;
+}
+
+/* ════════ 板块 2：美股板块（2 列网格 + 涨跌色）════════ */
+.sector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.sector-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  transition: all .15s;
+}
+.sector-card:hover {
+  border-color: var(--stamp);
+}
+.sector-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sector-icon {
+  font-size: 22px;
+  width: 32px;
+  text-align: center;
+}
+.sector-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.sector-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--mono);
+}
+.sector-pct {
+  font-size: 14px;
+  font-weight: 600;
+}
+.sector-pct.up { color: var(--up); }
+.sector-pct.down { color: var(--down); }
+.sector-meta {
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+/* ════════ 板块 3：今日复盘 ══════════════════════ */
+.review-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+.review-left, .review-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.review-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 16px 18px;
+}
+.review-card-title {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.review-card-body {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.review-index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.review-index-card {
+  padding: 10px 12px;
+  background: var(--bg-cover);
+  border-left: 3px solid var(--rule);
+}
+.review-index-card.up { border-color: var(--up); }
+.review-index-card.down { border-color: var(--down); }
+.review-index-name { font-size: 11px; color: var(--ink-faint); }
+.review-index-val { font-size: 16px; font-weight: 700; margin-top: 2px; }
+.review-index-val.up { color: var(--up); }
+.review-index-val.down { color: var(--down); }
+
+/* 涨停梯队条形图 */
+.review-ladder {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+  margin-top: 8px;
+}
+.ladder-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-family: var(--mono);
+  min-width: 30px;
+  padding-top: 4px;
+}
+.ladder-label {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+}
+
+/* ════════ 板块 4：盘前机会 ══════════════════════ */
+.premarket-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.premarket-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 16px 18px;
+}
+.premarket-card-title {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--stamp);
+  margin-bottom: 12px;
+}
+.news-item, .us-mapping-item, .auction-item {
+  font-size: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--rule-faint);
+  line-height: 1.5;
+}
+.news-item:last-child, .us-mapping-item:last-child, .auction-item:last-child {
+  border-bottom: none;
+}
+.news-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  margin-right: 6px;
+  font-size: 10px;
+  border-radius: 2px;
+  font-family: var(--mono);
+}
+.news-tag.policy { background: #e8eef9; color: var(--accent); }
+.news-tag.announce { background: #fbe8e3; color: var(--stamp); }
+.news-tag.overseas { background: #e7f5e7; color: #1f6a3a; }
+.impact-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  margin-left: 6px;
+}
+.impact-tag.up { color: var(--up); }
+.impact-tag.down { color: var(--down); }
+.impact-tag.neutral { color: var(--ink-faint); }
+
+/* ════════ 板块 5：明日预测 ══════════════════════ */
+.forecast-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+.forecast-summary {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 20px;
+}
+.forecast-direction {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--stamp);
+  margin-bottom: 12px;
+}
+.forecast-direction.up { color: var(--up); }
+.forecast-direction.down { color: var(--down); }
+.forecast-direction.flat { color: var(--ink-soft); }
+.forecast-prob {
+  margin: 12px 0;
+}
+.forecast-prob-bar {
+  height: 28px;
+  display: flex;
+  border-radius: 2px;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #fff;
+}
+.forecast-prob-up { background: var(--up); }
+.forecast-prob-flat { background: var(--ink-soft); }
+.forecast-prob-down { background: var(--down); }
+.forecast-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.forecast-block {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 14px 16px;
+}
+.forecast-block-title {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--stamp);
+  margin-bottom: 10px;
+}
+.forecast-block-body {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.forecast-block-body ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+/* ════════ 板块 6：四季地图 ══════════════════════ */
+.season-map-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.season-card {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  padding: 12px;
+  text-align: center;
+  transition: all .15s;
+}
+.season-card.current {
+  border-color: var(--stamp);
+  background: #fff5f0;
+  box-shadow: 0 2px 8px rgba(200,52,31,.1);
+}
+.season-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.season-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.season-rate {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--stamp);
+}
+.season-strategy {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--ink-soft);
+  padding: 2px 6px;
+  background: var(--bg-cover);
+  display: inline-block;
+}
+.season-feature {
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.season-current-strategy {
+  background: var(--bg-2);
+  border: 1px solid var(--stamp);
+  padding: 16px 18px;
+}
+.season-current-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--stamp);
+  margin-bottom: 8px;
+}
+.season-current-body {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.year-rhythm {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+.rhythm-month {
+  text-align: center;
+  padding: 6px 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.rhythm-month-name { color: var(--ink-soft); }
+.rhythm-month-rate { color: var(--stamp); font-weight: 700; }
+.rhythm-month.spring { background: #f0f5f0; }
+.rhythm-month.summer { background: #fff5e0; }
+.rhythm-month.summer-end { background: #fbe8e3; }
+.rhythm-month.autumn { background: #fff8e8; }
+.rhythm-month.winter { background: #e8eef9; }
+
+/* ════════ Responsive ════════ */
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-right { grid-template-columns: repeat(2, 1fr); }
+  .hero-title { font-size: 36px; }
+  .sector-grid { grid-template-columns: 1fr; }
+  .review-content { grid-template-columns: 1fr; }
+  .premarket-content { grid-template-columns: 1fr; }
+  .forecast-content { grid-template-columns: 1fr; }
+  .season-grid { grid-template-columns: repeat(2, 1fr); }
+  .year-rhythm { grid-template-columns: repeat(4, 1fr); }
+}
