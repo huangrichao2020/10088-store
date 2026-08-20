@@ -3,7 +3,7 @@
 > 从 pretty-sm 武器库销售页 → **idea-store 机会挖掘** 全自动 A 股决策平台
 > 接入 idea-to-trade 方法论 · 5 板块 + 四季地图 · 每日 AI 定时跑
 
-**线上访问**：https://www.ai10088.com/idea-store/（v0.1 已上线 · 2026-08-20）
+**线上访问**：https://ai80088.com/（v0.1 已上线 · 2026-08-20）
 
 ---
 
@@ -78,7 +78,7 @@
 | **样式** | 复用 aichainmap（MIT）+ idea-store 自定义 | 日光模式 + 中国 A 股涨跌色（涨红跌绿）|
 | **后端 AI** | idea-trade-qa Skill CLI + aliyun cron | 每日自动跑 6 个板块任务 |
 | **数据源** | NeoData · westockdata · akshare · WebSearch | 实时 A 股 + 美股 + 港股 |
-| **部署** | nginx + crontab | aliyun 服务器 · https://ai10088.com/idea-store/ |
+| **部署** | nginx + crontab | aliyun 服务器 · https://ai80088.com/ |
 
 ---
 
