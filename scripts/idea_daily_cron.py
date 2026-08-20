@@ -19,9 +19,11 @@ import subprocess
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# 路径
+# 路径（双写：root 给 cron 跑用，www 给 nginx 用）
 ALIYUN_DATA_DIR = Path("/root/workbuddy-data/idea-store")
-ALIYUN_DATA_DIR.mkdir(parents=True, exist_ok=True)
+NGINX_DATA_DIR = Path("/www/wwwroot/idea-store/data")
+for d in [ALIYUN_DATA_DIR, NGINX_DATA_DIR]:
+    d.mkdir(parents=True, exist_ok=True)
 
 IDEA_TO_QA = "/root/idea-to-trade/skill/idea-trade-qa/idea_trade_qa.py"
 
@@ -31,16 +33,17 @@ def today_str() -> str:
 
 
 def write_json(板块: str, data: dict, date: str = None):
-    """写入 JSON 文件"""
+    """双写 JSON 文件（root 给 cron + www 给 nginx）"""
     date = date or today_str()
-    dir_path = ALIYUN_DATA_DIR / 板块
-    dir_path.mkdir(parents=True, exist_ok=True)
-    file_path = dir_path / f"{date}.json"
 
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2, default=str)
+    for base_dir in [ALIYUN_DATA_DIR, NGINX_DATA_DIR]:
+        dir_path = base_dir / 板块
+        dir_path.mkdir(parents=True, exist_ok=True)
+        file_path = dir_path / f"{date}.json"
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2, default=str)
 
-    print(f"✓ {file_path}")
+    print(f"✓ {ALIYUN_DATA_DIR / 板块}/{date}.json")
     return file_path
 
 
@@ -272,7 +275,7 @@ def get_year_rhythm() -> list:
 
 
 def write_index():
-    """写索引文件"""
+    """写索引文件（双写）"""
     print("\n═══ 写索引文件 latest.json ═══")
     data = {
         "更新日期": today_str(),
@@ -286,10 +289,11 @@ def write_index():
             {"板块": "四季交易地图", "路径": "season-map/2026.json", "图标": "🗺️"},
         ],
     }
-    file_path = ALIYUN_DATA_DIR / "latest.json"
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"✓ {file_path}")
+    for base_dir in [ALIYUN_DATA_DIR, NGINX_DATA_DIR]:
+        file_path = base_dir / "latest.json"
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"✓ {ALIYUN_DATA_DIR}/latest.json")
     return file_path
 
 
