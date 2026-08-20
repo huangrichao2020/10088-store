@@ -1,4 +1,4 @@
-# 10088-store · idea-store · A 股智能决策平台
+# 80088-store · idea-store · A 股智能决策平台
 
 > 从 pretty-sm 武器库销售页 → **idea-store 机会挖掘** 全自动 A 股决策平台
 > 接入 idea-to-trade 方法论 · 5 板块 + 四季地图 · 每日 AI 定时跑
@@ -31,7 +31,7 @@
 ## 项目结构
 
 ```
-10088-store/                          ← 本仓库（前端 + 脚本）
+80088-store/                          ← 本仓库（前端 + 脚本）
 ├── index.html                        # 主页（5 板块 + 四季地图）
 ├── __auth/
 │   └── account.html                   # 保留（旧版订阅页 · 暂不删）
@@ -85,7 +85,7 @@
 ## 本地预览
 
 ```bash
-cd ~/Desktop/10088-store
+cd ~/Desktop/80088-store
 python3 -m http.server 8000
 # 访问 http://localhost:8000/
 
@@ -101,25 +101,25 @@ python3 -m http.server 8000
 bash scripts/aliyun_setup_cron.sh
 
 # 手动跑一次（测试）
-ssh aliyun "cd /root/idea-to-trade && python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py all"
+ssh aliyun "cd /root/idea-to-trade && python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py all"
 ```
 
 **crontab 自动跑**（每日 5 个时间点 + 月初）：
 
 ```
 # 07:00  盘前机会
-0 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py premarket
+0 7 * * 1-5 python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py premarket
 
 # 07:30  低位机会 + 美股映射
-30 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py low-position
-35 7 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py us-megastar
+30 7 * * 1-5 python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py low-position
+35 7 * * 1-5 python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py us-megastar
 
 # 15:30  今日复盘 + 明日预测
-30 15 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py daily-review
-35 15 * * 1-5 python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py forecast
+30 15 * * 1-5 python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py daily-review
+35 15 * * 1-5 python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py forecast
 
 # 月初 1 号 04:00  四季地图校准
-0 4 1 * * python3 /www/wwwroot/10088-store/scripts/idea_daily_cron.py season-map
+0 4 1 * * python3 /www/wwwroot/idea-store/scripts/idea_daily_cron.py season-map
 ```
 
 ---
@@ -130,7 +130,7 @@ ssh aliyun "cd /root/idea-to-trade && python3 /www/wwwroot/10088-store/scripts/i
 |------|------|------|
 | **idea-to-trade** | https://github.com/huangrichao2020/idea-to-trade | 方法论 + Skill 源 |
 | **机会挖掘 Skill** | idea-to-trade/skill/idea-trade-qa/ | 9 类场景模板 + CLI |
-| **10088-store** | https://github.com/huangrichao2020/10088-store | 本仓库（前端展示）|
+| **80088-store** | https://github.com/huangrichao2020/80088-store | 本仓库（前端展示）|
 
 ---
 
